@@ -7,841 +7,191 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Montserrat:wght@300;400;500;600&display=swap" rel="stylesheet">
 <style>
-  :root {
-    --gold: #C9A84C;
-    --gold-light: #E8C97A;
-    --gold-pale: #F5E6C0;
-    --dark: #0A0A0A;
-    --dark-2: #111111;
-    --dark-3: #1A1A1A;
-    --dark-4: #222222;
-    --dark-5: #2A2A2A;
-    --gray: #888888;
-    --gray-light: #AAAAAA;
-    --white: #FAF8F3;
-    --success: #4CAF7D;
-    --danger: #C9503C;
-    --font-display: 'Cormorant Garamond', serif;
-    --font-body: 'Montserrat', sans-serif;
-    --sidebar: 260px;
-  }
-
-  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-  html, body { height: 100%; }
-
-  body {
-    background: var(--dark);
-    color: var(--white);
-    font-family: var(--font-body);
-    font-weight: 300;
-    display: flex;
-    overflow: hidden;
-  }
-
-  /* ── TELA DE LOGIN ── */
-  #login-screen {
-    position: fixed;
-    inset: 0;
-    background: var(--dark);
-    z-index: 1000;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    flex-direction: column;
-    gap: 0;
-  }
-  #login-screen.hidden { display: none; }
-
-  .login-box {
-    width: 100%;
-    max-width: 400px;
-    padding: 56px 48px;
-    border: 1px solid rgba(201,168,76,0.15);
-    background: var(--dark-2);
-    position: relative;
-  }
-  .login-box::before {
-    content: '';
-    position: absolute;
-    top: 0; left: 48px; right: 48px;
-    height: 1px;
-    background: linear-gradient(to right, transparent, var(--gold), transparent);
-  }
-  .login-logo {
-    font-family: var(--font-display);
-    font-size: 28px;
-    font-style: italic;
-    color: var(--gold-light);
-    margin-bottom: 4px;
-  }
-  .login-sub {
-    font-size: 9px;
-    letter-spacing: 3px;
-    text-transform: uppercase;
-    color: var(--gray);
-    margin-bottom: 40px;
-  }
-  .login-label {
-    font-size: 9px;
-    letter-spacing: 2px;
-    text-transform: uppercase;
-    color: var(--gold);
-    display: block;
-    margin-bottom: 8px;
-  }
-  .login-input {
-    width: 100%;
-    background: var(--dark-3);
-    border: 1px solid rgba(201,168,76,0.2);
-    color: var(--white);
-    font-family: var(--font-body);
-    font-size: 13px;
-    padding: 12px 16px;
-    outline: none;
-    margin-bottom: 20px;
-    transition: border-color 0.2s;
-  }
-  .login-input:focus { border-color: var(--gold); }
-  .login-btn {
-    width: 100%;
-    background: linear-gradient(135deg, var(--gold-light), var(--gold));
-    border: none;
-    color: var(--dark);
-    font-family: var(--font-body);
-    font-size: 10px;
-    font-weight: 600;
-    letter-spacing: 3px;
-    text-transform: uppercase;
-    padding: 15px;
-    cursor: pointer;
-    transition: opacity 0.2s;
-    margin-top: 8px;
-  }
-  .login-btn:hover { opacity: 0.9; }
-  .login-error {
-    font-size: 11px;
-    color: var(--danger);
-    margin-top: 12px;
-    text-align: center;
-    min-height: 16px;
-  }
-  .login-hint {
-    font-size: 10px;
-    color: var(--gray);
-    text-align: center;
-    margin-top: 20px;
-    letter-spacing: 0.5px;
-  }
-
-  /* ── SIDEBAR ── */
-  .sidebar {
-    width: var(--sidebar);
-    height: 100vh;
-    background: var(--dark-2);
-    border-right: 1px solid rgba(201,168,76,0.1);
-    display: flex;
-    flex-direction: column;
-    flex-shrink: 0;
-    overflow-y: auto;
-  }
-
-  .sidebar-brand {
-    padding: 32px 28px 24px;
-    border-bottom: 1px solid rgba(201,168,76,0.08);
-  }
-  .sidebar-brand .name {
-    font-family: var(--font-display);
-    font-size: 20px;
-    font-style: italic;
-    color: var(--gold-light);
-    display: block;
-  }
-  .sidebar-brand .role {
-    font-size: 8px;
-    letter-spacing: 2.5px;
-    text-transform: uppercase;
-    color: var(--gray);
-    margin-top: 4px;
-    display: block;
-  }
-
-  .sidebar-nav {
-    padding: 20px 0;
-    flex: 1;
-  }
-  .nav-section-label {
-    font-size: 8px;
-    letter-spacing: 2.5px;
-    text-transform: uppercase;
-    color: var(--gray);
-    padding: 0 28px;
-    margin: 20px 0 8px;
-  }
-  .nav-item {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    padding: 11px 28px;
-    font-size: 12px;
-    font-weight: 400;
-    letter-spacing: 0.5px;
-    color: var(--gray-light);
-    cursor: pointer;
-    transition: all 0.2s;
-    border-left: 2px solid transparent;
-    user-select: none;
-  }
-  .nav-item:hover { color: var(--white); background: rgba(201,168,76,0.04); }
-  .nav-item.active {
-    color: var(--gold-light);
-    border-left-color: var(--gold);
-    background: rgba(201,168,76,0.06);
-  }
-  .nav-item svg { opacity: 0.6; flex-shrink: 0; }
-  .nav-item.active svg { opacity: 1; }
-
-  .nav-badge {
-    margin-left: auto;
-    background: var(--gold);
-    color: var(--dark);
-    font-size: 9px;
-    font-weight: 600;
-    padding: 2px 7px;
-    border-radius: 10px;
-    min-width: 20px;
-    text-align: center;
-  }
-
-  .sidebar-footer {
-    padding: 20px 28px;
-    border-top: 1px solid rgba(201,168,76,0.08);
-  }
-  .logout-btn {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    font-size: 11px;
-    color: var(--gray);
-    cursor: pointer;
-    transition: color 0.2s;
-    background: none;
-    border: none;
-    font-family: var(--font-body);
-    padding: 0;
-  }
-  .logout-btn:hover { color: var(--danger); }
-
-  /* ── MAIN ── */
-  .main {
-    flex: 1;
-    height: 100vh;
-    overflow-y: auto;
-    display: flex;
-    flex-direction: column;
-  }
-
-  /* ── TOPBAR ── */
-  .topbar {
-    padding: 20px 40px;
-    border-bottom: 1px solid rgba(201,168,76,0.08);
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    background: var(--dark-2);
-    position: sticky;
-    top: 0;
-    z-index: 10;
-  }
-  .topbar-title {
-    font-family: var(--font-display);
-    font-size: 22px;
-    font-weight: 300;
-    color: var(--white);
-  }
-  .topbar-title em { font-style: italic; color: var(--gold-light); }
-  .topbar-actions { display: flex; gap: 12px; align-items: center; }
-
-  /* ── CONTENT ── */
-  .content { padding: 40px; flex: 1; }
-
-  /* ── CARDS RESUMO ── */
-  .stats-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-    gap: 16px;
-    margin-bottom: 40px;
-  }
-  .stat-card {
-    background: var(--dark-2);
-    border: 1px solid rgba(201,168,76,0.08);
-    padding: 24px;
-    position: relative;
-    overflow: hidden;
-  }
-  .stat-card::after {
-    content: '';
-    position: absolute;
-    bottom: 0; left: 0; right: 0;
-    height: 2px;
-    background: linear-gradient(to right, var(--gold), transparent);
-  }
-  .stat-label {
-    font-size: 8px;
-    letter-spacing: 2.5px;
-    text-transform: uppercase;
-    color: var(--gray);
-    margin-bottom: 10px;
-  }
-  .stat-value {
-    font-family: var(--font-display);
-    font-size: 36px;
-    font-weight: 300;
-    color: var(--gold-light);
-    line-height: 1;
-  }
-  .stat-sub {
-    font-size: 10px;
-    color: var(--gray);
-    margin-top: 6px;
-  }
-
-  /* ── TABELA ── */
-  .table-header {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    margin-bottom: 20px;
-    flex-wrap: wrap;
-    gap: 12px;
-  }
-  .table-title {
-    font-family: var(--font-display);
-    font-size: 20px;
-    font-weight: 300;
-    color: var(--white);
-  }
-  .search-box {
-    display: flex;
-    align-items: center;
-    gap: 0;
-  }
-  .search-input {
-    background: var(--dark-3);
-    border: 1px solid rgba(201,168,76,0.15);
-    border-right: none;
-    color: var(--white);
-    font-family: var(--font-body);
-    font-size: 12px;
-    padding: 9px 14px;
-    outline: none;
-    width: 220px;
-  }
-  .search-input:focus { border-color: var(--gold); }
-  .search-btn {
-    background: var(--dark-3);
-    border: 1px solid rgba(201,168,76,0.15);
-    color: var(--gray);
-    padding: 9px 12px;
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-  }
-
-  .table-wrap {
-    background: var(--dark-2);
-    border: 1px solid rgba(201,168,76,0.08);
-    overflow: hidden;
-  }
-  table {
-    width: 100%;
-    border-collapse: collapse;
-  }
-  thead tr {
-    border-bottom: 1px solid rgba(201,168,76,0.1);
-  }
-  th {
-    font-size: 8px;
-    font-weight: 600;
-    letter-spacing: 2.5px;
-    text-transform: uppercase;
-    color: var(--gold);
-    padding: 14px 20px;
-    text-align: left;
-  }
-  td {
-    font-size: 12px;
-    color: var(--gray-light);
-    padding: 16px 20px;
-    border-bottom: 1px solid rgba(255,255,255,0.03);
-    vertical-align: middle;
-  }
-  tr:last-child td { border-bottom: none; }
-  tr:hover td { background: rgba(201,168,76,0.02); }
-
-  .td-nome {
-    font-family: var(--font-display);
-    font-size: 16px;
-    font-weight: 400;
-    color: var(--white);
-  }
-  .td-tipo {
-    font-size: 8px;
-    font-weight: 600;
-    letter-spacing: 2px;
-    text-transform: uppercase;
-    color: var(--gold);
-    background: rgba(201,168,76,0.08);
-    padding: 4px 10px;
-    display: inline-block;
-  }
-  .td-preco {
-    font-family: var(--font-display);
-    font-size: 18px;
-    font-weight: 300;
-    color: var(--gold-light);
-  }
-  .status-badge {
-    font-size: 8px;
-    font-weight: 600;
-    letter-spacing: 1.5px;
-    text-transform: uppercase;
-    padding: 4px 10px;
-    display: inline-block;
-  }
-  .status-ativo { background: rgba(76,175,125,0.15); color: #4CAF7D; }
-  .status-inativo { background: rgba(201,80,60,0.15); color: #C9503C; }
-  .status-rascunho { background: rgba(136,136,136,0.15); color: var(--gray); }
-
-  .action-btns { display: flex; gap: 8px; }
-  .action-btn {
-    background: none;
-    border: 1px solid rgba(201,168,76,0.15);
-    color: var(--gray);
-    width: 32px; height: 32px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    cursor: pointer;
-    transition: all 0.2s;
-  }
-  .action-btn:hover { border-color: var(--gold); color: var(--gold); }
-  .action-btn.danger:hover { border-color: var(--danger); color: var(--danger); }
-
-  /* ── BOTÕES ── */
-  .btn-gold {
-    display: inline-flex;
-    align-items: center;
-    gap: 8px;
-    background: linear-gradient(135deg, var(--gold-light), var(--gold));
-    border: none;
-    color: var(--dark);
-    font-family: var(--font-body);
-    font-size: 9px;
-    font-weight: 600;
-    letter-spacing: 2.5px;
-    text-transform: uppercase;
-    padding: 11px 24px;
-    cursor: pointer;
-    transition: opacity 0.2s;
-  }
-  .btn-gold:hover { opacity: 0.9; }
-  .btn-outline {
-    display: inline-flex;
-    align-items: center;
-    gap: 8px;
-    background: none;
-    border: 1px solid rgba(201,168,76,0.3);
-    color: var(--gold-light);
-    font-family: var(--font-body);
-    font-size: 9px;
-    font-weight: 500;
-    letter-spacing: 2px;
-    text-transform: uppercase;
-    padding: 11px 24px;
-    cursor: pointer;
-    transition: all 0.2s;
-  }
-  .btn-outline:hover { background: rgba(201,168,76,0.08); border-color: var(--gold); }
-  .btn-danger {
-    display: inline-flex;
-    align-items: center;
-    gap: 8px;
-    background: none;
-    border: 1px solid rgba(201,80,60,0.3);
-    color: #C9503C;
-    font-family: var(--font-body);
-    font-size: 9px;
-    font-weight: 500;
-    letter-spacing: 2px;
-    text-transform: uppercase;
-    padding: 11px 24px;
-    cursor: pointer;
-    transition: all 0.2s;
-  }
-  .btn-danger:hover { background: rgba(201,80,60,0.08); }
-
-  /* ── DRAWER (formulário) ── */
-  .drawer-overlay {
-    position: fixed;
-    inset: 0;
-    background: rgba(0,0,0,0.7);
-    z-index: 200;
-    opacity: 0;
-    pointer-events: none;
-    transition: opacity 0.3s;
-  }
-  .drawer-overlay.open { opacity: 1; pointer-events: all; }
-
-  .drawer {
-    position: fixed;
-    top: 0; right: 0; bottom: 0;
-    width: 600px;
-    background: var(--dark-2);
-    border-left: 1px solid rgba(201,168,76,0.12);
-    z-index: 201;
-    overflow-y: auto;
-    transform: translateX(100%);
-    transition: transform 0.35s cubic-bezier(0.16,1,0.3,1);
-    display: flex;
-    flex-direction: column;
-  }
-  .drawer-overlay.open .drawer { transform: translateX(0); }
-
-  .drawer-header {
-    padding: 32px 40px 24px;
-    border-bottom: 1px solid rgba(201,168,76,0.08);
-    display: flex;
-    align-items: flex-start;
-    justify-content: space-between;
-    position: sticky;
-    top: 0;
-    background: var(--dark-2);
-    z-index: 2;
-  }
-  .drawer-title {
-    font-family: var(--font-display);
-    font-size: 26px;
-    font-weight: 300;
-  }
-  .drawer-title em { font-style: italic; color: var(--gold-light); }
-  .drawer-close {
-    background: none;
-    border: 1px solid rgba(201,168,76,0.2);
-    color: var(--gray);
-    width: 36px; height: 36px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    cursor: pointer;
-    font-size: 16px;
-    transition: all 0.2s;
-    flex-shrink: 0;
-  }
-  .drawer-close:hover { border-color: var(--gold); color: var(--gold); }
-
-  .drawer-body { padding: 32px 40px; flex: 1; }
-  .drawer-footer {
-    padding: 24px 40px;
-    border-top: 1px solid rgba(201,168,76,0.08);
-    display: flex;
-    gap: 12px;
-    position: sticky;
-    bottom: 0;
-    background: var(--dark-2);
-  }
-
-  /* ── FORM ── */
-  .form-section {
-    margin-bottom: 32px;
-  }
-  .form-section-title {
-    font-size: 9px;
-    font-weight: 600;
-    letter-spacing: 3px;
-    text-transform: uppercase;
-    color: var(--gold);
-    margin-bottom: 20px;
-    padding-bottom: 10px;
-    border-bottom: 1px solid rgba(201,168,76,0.1);
-  }
-  .form-row {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 16px;
-    margin-bottom: 16px;
-  }
-  .form-row.full { grid-template-columns: 1fr; }
-  .form-row.three { grid-template-columns: 1fr 1fr 1fr; }
-  .form-group { display: flex; flex-direction: column; }
-  .form-label {
-    font-size: 9px;
-    letter-spacing: 2px;
-    text-transform: uppercase;
-    color: var(--gray);
-    margin-bottom: 8px;
-  }
-  .form-label span { color: var(--gold); margin-left: 2px; }
-  .form-input, .form-select, .form-textarea {
-    background: var(--dark-3);
-    border: 1px solid rgba(201,168,76,0.15);
-    color: var(--white);
-    font-family: var(--font-body);
-    font-size: 13px;
-    padding: 11px 14px;
-    outline: none;
-    transition: border-color 0.2s;
-    width: 100%;
-  }
-  .form-input:focus, .form-select:focus, .form-textarea:focus {
-    border-color: var(--gold);
-  }
-  .form-select {
-    appearance: none;
-    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6' viewBox='0 0 10 6'%3E%3Cpath d='M1 1l4 4 4-4' stroke='%23C9A84C' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");
-    background-repeat: no-repeat;
-    background-position: right 14px center;
-    padding-right: 36px;
-    cursor: pointer;
-  }
-  .form-select option { background: var(--dark-3); }
-  .form-textarea { resize: vertical; min-height: 100px; line-height: 1.6; }
-
-  /* PROPRIETÁRIO — campos ocultos */
-  .prop-section {
-    background: var(--dark-3);
-    border: 1px solid rgba(201,168,76,0.08);
-    padding: 24px;
-    border-left: 2px solid var(--gold);
-    margin-bottom: 8px;
-  }
-  .prop-notice {
-    font-size: 10px;
-    color: var(--gray);
-    letter-spacing: 0.5px;
-    margin-bottom: 16px;
-    display: flex;
-    align-items: center;
-    gap: 8px;
-  }
-  .prop-notice svg { flex-shrink: 0; }
-
-  /* UPLOAD FOTO */
-  .upload-area {
-    border: 1px dashed rgba(201,168,76,0.25);
-    padding: 32px;
-    text-align: center;
-    cursor: pointer;
-    transition: all 0.2s;
-    position: relative;
-  }
-  .upload-area:hover { border-color: var(--gold); background: rgba(201,168,76,0.03); }
-  .upload-area input { position: absolute; inset: 0; opacity: 0; cursor: pointer; width: 100%; }
-  .upload-icon { margin-bottom: 10px; opacity: 0.4; }
-  .upload-text { font-size: 12px; color: var(--gray); }
-  .upload-text strong { color: var(--gold-light); font-weight: 500; }
-
-  .fotos-preview {
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    gap: 8px;
-    margin-top: 12px;
-  }
-  .foto-thumb {
-    aspect-ratio: 1;
-    background: var(--dark-3);
-    border: 1px solid rgba(201,168,76,0.1);
-    overflow: hidden;
-    position: relative;
-  }
-  .foto-thumb img { width: 100%; height: 100%; object-fit: cover; }
-  .foto-remove {
-    position: absolute;
-    top: 4px; right: 4px;
-    background: rgba(0,0,0,0.7);
-    border: none;
-    color: white;
-    width: 20px; height: 20px;
-    border-radius: 50%;
-    font-size: 11px;
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    line-height: 1;
-  }
-  .foto-placeholder {
-    width: 100%; height: 100%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    opacity: 0.2;
-  }
-
-  /* ── PÁGINA DE CONFIGURAÇÕES ── */
-  .config-grid {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 24px;
-  }
-  .config-card {
-    background: var(--dark-2);
-    border: 1px solid rgba(201,168,76,0.08);
-    padding: 32px;
-  }
-  .config-card-title {
-    font-size: 9px;
-    font-weight: 600;
-    letter-spacing: 3px;
-    text-transform: uppercase;
-    color: var(--gold);
-    margin-bottom: 24px;
-    padding-bottom: 12px;
-    border-bottom: 1px solid rgba(201,168,76,0.08);
-    display: flex;
-    align-items: center;
-    gap: 10px;
-  }
-  .config-color-row {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    margin-bottom: 16px;
-  }
-  .color-preview {
-    width: 36px; height: 36px;
-    border: 1px solid rgba(201,168,76,0.2);
-    cursor: pointer;
-    flex-shrink: 0;
-  }
-  input[type="color"] {
-    width: 36px; height: 36px;
-    border: none;
-    padding: 0;
-    background: none;
-    cursor: pointer;
-    border-radius: 0;
-  }
-  .config-save-bar {
-    position: fixed;
-    bottom: 0; left: var(--sidebar); right: 0;
-    background: var(--dark-2);
-    border-top: 1px solid rgba(201,168,76,0.15);
-    padding: 16px 40px;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    z-index: 50;
-    transform: translateY(100%);
-    transition: transform 0.3s;
-  }
-  .config-save-bar.visible { transform: translateY(0); }
-  .config-changed-notice {
-    font-size: 11px;
-    color: var(--gold);
-    display: flex;
-    align-items: center;
-    gap: 8px;
-  }
-
-  /* ── PROPRIETÁRIOS (tabela) ── */
-  .prop-tag {
-    font-size: 8px;
-    background: rgba(201,168,76,0.1);
-    color: var(--gold);
-    padding: 3px 8px;
-    letter-spacing: 1px;
-    text-transform: uppercase;
-  }
-
-  /* ── TOAST ── */
-  .toast {
-    position: fixed;
-    bottom: 32px; right: 32px;
-    background: var(--dark-3);
-    border: 1px solid rgba(201,168,76,0.2);
-    border-left: 3px solid var(--gold);
-    padding: 16px 24px;
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    z-index: 999;
-    transform: translateX(120%);
-    transition: transform 0.35s cubic-bezier(0.16,1,0.3,1);
-    min-width: 280px;
-  }
-  .toast.show { transform: translateX(0); }
-  .toast.success { border-left-color: var(--success); }
-  .toast.error { border-left-color: var(--danger); }
-  .toast-text { font-size: 13px; color: var(--white); }
-  .toast-sub { font-size: 11px; color: var(--gray); margin-top: 2px; }
-
-  /* ── EMPTY STATE ── */
-  .empty-state {
-    text-align: center;
-    padding: 80px 40px;
-    border: 1px dashed rgba(201,168,76,0.1);
-  }
-  .empty-icon { opacity: 0.15; margin-bottom: 16px; }
-  .empty-title {
-    font-family: var(--font-display);
-    font-size: 24px;
-    font-weight: 300;
-    color: var(--gray);
-    font-style: italic;
-  }
-  .empty-sub { font-size: 12px; color: var(--gray); margin-top: 6px; letter-spacing: 0.5px; }
-
-  /* ── CONFIRM MODAL ── */
-  .confirm-overlay {
-    position: fixed;
-    inset: 0;
-    background: rgba(0,0,0,0.8);
-    z-index: 500;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    opacity: 0;
-    pointer-events: none;
-    transition: opacity 0.2s;
-  }
-  .confirm-overlay.open { opacity: 1; pointer-events: all; }
-  .confirm-box {
-    background: var(--dark-2);
-    border: 1px solid rgba(201,80,60,0.25);
-    padding: 40px;
-    max-width: 380px;
-    width: 100%;
-  }
-  .confirm-title {
-    font-family: var(--font-display);
-    font-size: 22px;
-    font-weight: 300;
-    margin-bottom: 12px;
-  }
-  .confirm-text { font-size: 13px; color: var(--gray-light); line-height: 1.6; margin-bottom: 32px; }
-  .confirm-actions { display: flex; gap: 12px; }
-
-  /* ── SCROLL ── */
-  ::-webkit-scrollbar { width: 4px; }
-  ::-webkit-scrollbar-track { background: transparent; }
-  ::-webkit-scrollbar-thumb { background: rgba(201,168,76,0.2); }
-  ::-webkit-scrollbar-thumb:hover { background: rgba(201,168,76,0.4); }
-
-  /* ── PAGES ── */
-  .page { display: none; }
-  .page.active { display: block; }
-
-  @media (max-width: 900px) {
-    .drawer { width: 100%; }
-    .config-grid { grid-template-columns: 1fr; }
-    .form-row { grid-template-columns: 1fr; }
-    .form-row.three { grid-template-columns: 1fr 1fr; }
-  }
+  :root{--gold:#C9A84C;--gold-light:#E8C97A;--gold-pale:#F5E6C0;--dark:#0A0A0A;--dark-2:#111111;--dark-3:#1A1A1A;--dark-4:#222222;--dark-5:#2A2A2A;--gray:#888888;--gray-light:#AAAAAA;--white:#FAF8F3;--success:#4CAF7D;--danger:#C9503C;--font-display:'Cormorant Garamond',serif;--font-body:'Montserrat',sans-serif;--sidebar:260px}
+  *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+  html,body{height:100%}
+  body{background:var(--dark);color:var(--white);font-family:var(--font-body);font-weight:300;display:flex;overflow:hidden}
+  #login-screen{position:fixed;inset:0;background:var(--dark);z-index:1000;display:flex;align-items:center;justify-content:center}
+  #login-screen.hidden{display:none}
+  .login-box{width:100%;max-width:400px;padding:56px 48px;border:1px solid rgba(201,168,76,.15);background:var(--dark-2);position:relative}
+  .login-box::before{content:'';position:absolute;top:0;left:48px;right:48px;height:1px;background:linear-gradient(to right,transparent,var(--gold),transparent)}
+  .login-logo{font-family:var(--font-display);font-size:28px;font-style:italic;color:var(--gold-light);margin-bottom:4px}
+  .login-sub{font-size:9px;letter-spacing:3px;text-transform:uppercase;color:var(--gray);margin-bottom:40px}
+  .login-label{font-size:9px;letter-spacing:2px;text-transform:uppercase;color:var(--gold);display:block;margin-bottom:8px}
+  .login-input{width:100%;background:var(--dark-3);border:1px solid rgba(201,168,76,.2);color:var(--white);font-family:var(--font-body);font-size:13px;padding:12px 16px;outline:none;margin-bottom:20px;transition:border-color .2s}
+  .login-input:focus{border-color:var(--gold)}
+  .login-btn{width:100%;background:linear-gradient(135deg,var(--gold-light),var(--gold));border:none;color:var(--dark);font-family:var(--font-body);font-size:10px;font-weight:600;letter-spacing:3px;text-transform:uppercase;padding:15px;cursor:pointer;transition:opacity .2s;margin-top:8px}
+  .login-btn:hover{opacity:.9}
+  .login-error{font-size:11px;color:var(--danger);margin-top:12px;text-align:center;min-height:16px}
+  .sidebar{width:var(--sidebar);height:100vh;background:var(--dark-2);border-right:1px solid rgba(201,168,76,.1);display:flex;flex-direction:column;flex-shrink:0;overflow-y:auto}
+  .sidebar-brand{padding:32px 28px 24px;border-bottom:1px solid rgba(201,168,76,.08)}
+  .sidebar-brand .name{font-family:var(--font-display);font-size:20px;font-style:italic;color:var(--gold-light);display:block}
+  .sidebar-brand .role{font-size:8px;letter-spacing:2.5px;text-transform:uppercase;color:var(--gray);margin-top:4px;display:block}
+  .sidebar-nav{padding:20px 0;flex:1}
+  .nav-section-label{font-size:8px;letter-spacing:2.5px;text-transform:uppercase;color:var(--gray);padding:0 28px;margin:20px 0 8px}
+  .nav-item{display:flex;align-items:center;gap:12px;padding:11px 28px;font-size:12px;color:var(--gray-light);cursor:pointer;transition:all .2s;border-left:2px solid transparent;user-select:none}
+  .nav-item:hover{color:var(--white);background:rgba(201,168,76,.04)}
+  .nav-item.active{color:var(--gold-light);border-left-color:var(--gold);background:rgba(201,168,76,.06)}
+  .nav-item svg{opacity:.6;flex-shrink:0}.nav-item.active svg{opacity:1}
+  .nav-badge{margin-left:auto;background:var(--gold);color:var(--dark);font-size:9px;font-weight:600;padding:2px 7px;border-radius:10px;min-width:20px;text-align:center}
+  .sidebar-footer{padding:20px 28px;border-top:1px solid rgba(201,168,76,.08)}
+  .logout-btn{display:flex;align-items:center;gap:10px;font-size:11px;color:var(--gray);cursor:pointer;transition:color .2s;background:none;border:none;font-family:var(--font-body);padding:0}
+  .logout-btn:hover{color:var(--danger)}
+  .main{flex:1;height:100vh;overflow-y:auto;display:flex;flex-direction:column}
+  .topbar{padding:20px 40px;border-bottom:1px solid rgba(201,168,76,.08);display:flex;align-items:center;justify-content:space-between;background:var(--dark-2);position:sticky;top:0;z-index:10}
+  .topbar-title{font-family:var(--font-display);font-size:22px;font-weight:300;color:var(--white)}
+  .topbar-title em{font-style:italic;color:var(--gold-light)}
+  .content{padding:40px;flex:1}
+  .stats-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:16px;margin-bottom:40px}
+  .stat-card{background:var(--dark-2);border:1px solid rgba(201,168,76,.08);padding:24px;position:relative;overflow:hidden}
+  .stat-card::after{content:'';position:absolute;bottom:0;left:0;right:0;height:2px;background:linear-gradient(to right,var(--gold),transparent)}
+  .stat-label{font-size:8px;letter-spacing:2.5px;text-transform:uppercase;color:var(--gray);margin-bottom:10px}
+  .stat-value{font-family:var(--font-display);font-size:36px;font-weight:300;color:var(--gold-light);line-height:1}
+  .stat-sub{font-size:10px;color:var(--gray);margin-top:6px}
+  .table-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:20px;flex-wrap:wrap;gap:12px}
+  .table-title{font-family:var(--font-display);font-size:20px;font-weight:300;color:var(--white)}
+  .search-box{display:flex;align-items:center}
+  .search-input{background:var(--dark-3);border:1px solid rgba(201,168,76,.15);border-right:none;color:var(--white);font-family:var(--font-body);font-size:12px;padding:9px 14px;outline:none;width:220px}
+  .search-input:focus{border-color:var(--gold)}
+  .search-btn{background:var(--dark-3);border:1px solid rgba(201,168,76,.15);color:var(--gray);padding:9px 12px;cursor:pointer;display:flex;align-items:center}
+  .table-wrap{background:var(--dark-2);border:1px solid rgba(201,168,76,.08);overflow:hidden}
+  table{width:100%;border-collapse:collapse}
+  thead tr{border-bottom:1px solid rgba(201,168,76,.1)}
+  th{font-size:8px;font-weight:600;letter-spacing:2.5px;text-transform:uppercase;color:var(--gold);padding:14px 20px;text-align:left}
+  td{font-size:12px;color:var(--gray-light);padding:16px 20px;border-bottom:1px solid rgba(255,255,255,.03);vertical-align:middle}
+  tr:last-child td{border-bottom:none}
+  tr:hover td{background:rgba(201,168,76,.02)}
+  .td-nome{font-family:var(--font-display);font-size:16px;font-weight:400;color:var(--white)}
+  .td-tipo{font-size:8px;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:var(--gold);background:rgba(201,168,76,.08);padding:4px 10px;display:inline-block}
+  .td-preco{font-family:var(--font-display);font-size:18px;font-weight:300;color:var(--gold-light)}
+  .status-badge{font-size:8px;font-weight:600;letter-spacing:1.5px;text-transform:uppercase;padding:4px 10px;display:inline-block}
+  .status-ativo{background:rgba(76,175,125,.15);color:#4CAF7D}
+  .status-inativo{background:rgba(201,80,60,.15);color:#C9503C}
+  .status-rascunho{background:rgba(136,136,136,.15);color:var(--gray)}
+  .action-btns{display:flex;gap:8px}
+  .action-btn{background:none;border:1px solid rgba(201,168,76,.15);color:var(--gray);width:32px;height:32px;display:flex;align-items:center;justify-content:center;cursor:pointer;transition:all .2s}
+  .action-btn:hover{border-color:var(--gold);color:var(--gold)}
+  .action-btn.danger:hover{border-color:var(--danger);color:var(--danger)}
+  .btn-gold{display:inline-flex;align-items:center;gap:8px;background:linear-gradient(135deg,var(--gold-light),var(--gold));border:none;color:var(--dark);font-family:var(--font-body);font-size:9px;font-weight:600;letter-spacing:2.5px;text-transform:uppercase;padding:11px 24px;cursor:pointer;transition:opacity .2s}
+  .btn-gold:hover{opacity:.9}
+  .btn-outline{display:inline-flex;align-items:center;gap:8px;background:none;border:1px solid rgba(201,168,76,.3);color:var(--gold-light);font-family:var(--font-body);font-size:9px;font-weight:500;letter-spacing:2px;text-transform:uppercase;padding:11px 24px;cursor:pointer;transition:all .2s}
+  .btn-outline:hover{background:rgba(201,168,76,.08);border-color:var(--gold)}
+  .btn-danger{display:inline-flex;align-items:center;gap:8px;background:none;border:1px solid rgba(201,80,60,.3);color:#C9503C;font-family:var(--font-body);font-size:9px;font-weight:500;letter-spacing:2px;text-transform:uppercase;padding:11px 24px;cursor:pointer;transition:all .2s}
+  .btn-danger:hover{background:rgba(201,80,60,.08)}
+  .drawer-overlay{position:fixed;inset:0;background:rgba(0,0,0,.7);z-index:200;opacity:0;pointer-events:none;transition:opacity .3s}
+  .drawer-overlay.open{opacity:1;pointer-events:all}
+  .drawer{position:fixed;top:0;right:0;bottom:0;width:600px;background:var(--dark-2);border-left:1px solid rgba(201,168,76,.12);z-index:201;overflow-y:auto;transform:translateX(100%);transition:transform .35s cubic-bezier(.16,1,.3,1);display:flex;flex-direction:column}
+  .drawer-overlay.open .drawer{transform:translateX(0)}
+  .drawer-header{padding:32px 40px 24px;border-bottom:1px solid rgba(201,168,76,.08);display:flex;align-items:flex-start;justify-content:space-between;position:sticky;top:0;background:var(--dark-2);z-index:2}
+  .drawer-title{font-family:var(--font-display);font-size:26px;font-weight:300}
+  .drawer-title em{font-style:italic;color:var(--gold-light)}
+  .drawer-close{background:none;border:1px solid rgba(201,168,76,.2);color:var(--gray);width:36px;height:36px;display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:16px;transition:all .2s;flex-shrink:0}
+  .drawer-close:hover{border-color:var(--gold);color:var(--gold)}
+  .drawer-body{padding:32px 40px;flex:1}
+  .drawer-footer{padding:24px 40px;border-top:1px solid rgba(201,168,76,.08);display:flex;gap:12px;position:sticky;bottom:0;background:var(--dark-2)}
+  .form-section{margin-bottom:32px}
+  .form-section-title{font-size:9px;font-weight:600;letter-spacing:3px;text-transform:uppercase;color:var(--gold);margin-bottom:20px;padding-bottom:10px;border-bottom:1px solid rgba(201,168,76,.1)}
+  .form-row{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:16px}
+  .form-row.full{grid-template-columns:1fr}.form-row.three{grid-template-columns:1fr 1fr 1fr}
+  .form-group{display:flex;flex-direction:column}
+  .form-label{font-size:9px;letter-spacing:2px;text-transform:uppercase;color:var(--gray);margin-bottom:8px}
+  .form-label span{color:var(--gold);margin-left:2px}
+  .form-input,.form-select,.form-textarea{background:var(--dark-3);border:1px solid rgba(201,168,76,.15);color:var(--white);font-family:var(--font-body);font-size:13px;padding:11px 14px;outline:none;transition:border-color .2s;width:100%}
+  .form-input:focus,.form-select:focus,.form-textarea:focus{border-color:var(--gold)}
+  .form-select{appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6' viewBox='0 0 10 6'%3E%3Cpath d='M1 1l4 4 4-4' stroke='%23C9A84C' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 14px center;padding-right:36px;cursor:pointer}
+  .form-select option{background:var(--dark-3)}
+  .form-textarea{resize:vertical;min-height:100px;line-height:1.6}
+  .prop-section{background:var(--dark-3);border:1px solid rgba(201,168,76,.08);padding:24px;border-left:2px solid var(--gold);margin-bottom:8px}
+  .prop-notice{font-size:10px;color:var(--gray);letter-spacing:.5px;margin-bottom:16px;display:flex;align-items:center;gap:8px}
+  .upload-area{border:1px dashed rgba(201,168,76,.25);padding:32px;text-align:center;cursor:pointer;transition:all .2s;position:relative}
+  .upload-area:hover{border-color:var(--gold);background:rgba(201,168,76,.03)}
+  .upload-area input{position:absolute;inset:0;opacity:0;cursor:pointer;width:100%}
+  .upload-icon{margin-bottom:10px;opacity:.4}
+  .upload-text{font-size:12px;color:var(--gray)}
+  .upload-text strong{color:var(--gold-light);font-weight:500}
+  .fotos-preview{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-top:12px}
+  .foto-thumb{aspect-ratio:1;background:var(--dark-3);border:1px solid rgba(201,168,76,.1);overflow:hidden;position:relative}
+  .foto-thumb img{width:100%;height:100%;object-fit:cover}
+  .foto-remove{position:absolute;top:4px;right:4px;background:rgba(0,0,0,.7);border:none;color:white;width:20px;height:20px;border-radius:50%;font-size:11px;cursor:pointer;display:flex;align-items:center;justify-content:center}
+  .config-grid{display:grid;grid-template-columns:1fr 1fr;gap:24px}
+  .config-card{background:var(--dark-2);border:1px solid rgba(201,168,76,.08);padding:32px}
+  .config-card-title{font-size:9px;font-weight:600;letter-spacing:3px;text-transform:uppercase;color:var(--gold);margin-bottom:24px;padding-bottom:12px;border-bottom:1px solid rgba(201,168,76,.08);display:flex;align-items:center;gap:10px}
+  .config-save-bar{position:fixed;bottom:0;left:var(--sidebar);right:0;background:var(--dark-2);border-top:1px solid rgba(201,168,76,.15);padding:16px 40px;display:flex;align-items:center;justify-content:space-between;z-index:50;transform:translateY(100%);transition:transform .3s}
+  .config-save-bar.visible{transform:translateY(0)}
+  .config-changed-notice{font-size:11px;color:var(--gold);display:flex;align-items:center;gap:8px}
+  .toast{position:fixed;bottom:32px;right:32px;background:var(--dark-3);border:1px solid rgba(201,168,76,.2);border-left:3px solid var(--gold);padding:16px 24px;display:flex;align-items:center;gap:12px;z-index:999;transform:translateX(120%);transition:transform .35s cubic-bezier(.16,1,.3,1);min-width:280px}
+  .toast.show{transform:translateX(0)}.toast.error{border-left-color:var(--danger)}
+  .toast-text{font-size:13px;color:var(--white)}.toast-sub{font-size:11px;color:var(--gray);margin-top:2px}
+  .empty-state{text-align:center;padding:80px 40px;border:1px dashed rgba(201,168,76,.1)}
+  .empty-icon{opacity:.15;margin-bottom:16px}
+  .empty-title{font-family:var(--font-display);font-size:24px;font-weight:300;color:var(--gray);font-style:italic}
+  .empty-sub{font-size:12px;color:var(--gray);margin-top:6px;letter-spacing:.5px}
+  .confirm-overlay{position:fixed;inset:0;background:rgba(0,0,0,.8);z-index:500;display:flex;align-items:center;justify-content:center;opacity:0;pointer-events:none;transition:opacity .2s}
+  .confirm-overlay.open{opacity:1;pointer-events:all}
+  .confirm-box{background:var(--dark-2);border:1px solid rgba(201,80,60,.25);padding:40px;max-width:380px;width:100%}
+  .confirm-title{font-family:var(--font-display);font-size:22px;font-weight:300;margin-bottom:12px}
+  .confirm-text{font-size:13px;color:var(--gray-light);line-height:1.6;margin-bottom:32px}
+  .confirm-actions{display:flex;gap:12px}
+  ::-webkit-scrollbar{width:4px}::-webkit-scrollbar-track{background:transparent}::-webkit-scrollbar-thumb{background:rgba(201,168,76,.2)}
+  .page{display:none}.page.active{display:block}
+  .saving-overlay{position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:900;display:none;align-items:center;justify-content:center;flex-direction:column;gap:16px}
+  .saving-overlay.show{display:flex}
+  .saving-spinner{width:40px;height:40px;border:2px solid rgba(201,168,76,.2);border-top-color:var(--gold);border-radius:50%;animation:spin .8s linear infinite}
+  @keyframes spin{to{transform:rotate(360deg)}}
+  .saving-text{font-size:11px;letter-spacing:3px;text-transform:uppercase;color:var(--gold-light)}
 </style>
 </head>
 <body>
 
-<!-- ── TELA DE LOGIN ── -->
+<script>
+// ╔══════════════════════════════════════════════════════════════╗
+// ║  SUPABASE — não mexa aqui                                   ║
+// ╚══════════════════════════════════════════════════════════════╝
+const SUPA_URL = 'https://lnaghoxwohdupftwofza.supabase.co';
+const SUPA_KEY = 'sb_publishable_5ylsEMpbdV_XXaKKMRGokg_BShk85ar';
+
+const supa = {
+  headers: {
+    'apikey': SUPA_KEY,
+    'Authorization': 'Bearer ' + SUPA_KEY,
+    'Content-Type': 'application/json',
+    'Prefer': 'return=representation'
+  },
+  async get(tabela, filtro = '') {
+    const res = await fetch(SUPA_URL + '/rest/v1/' + tabela + filtro, { headers: this.headers });
+    if (!res.ok) throw new Error(await res.text());
+    return res.json();
+  },
+  async insert(tabela, dados) {
+    const res = await fetch(SUPA_URL + '/rest/v1/' + tabela, {
+      method: 'POST', headers: this.headers, body: JSON.stringify(dados)
+    });
+    if (!res.ok) throw new Error(await res.text());
+    return res.json();
+  },
+  async update(tabela, id, dados) {
+    const res = await fetch(SUPA_URL + '/rest/v1/' + tabela + '?id=eq.' + id, {
+      method: 'PATCH', headers: this.headers, body: JSON.stringify(dados)
+    });
+    if (!res.ok) throw new Error(await res.text());
+    return res.json();
+  },
+  async delete(tabela, id) {
+    const res = await fetch(SUPA_URL + '/rest/v1/' + tabela + '?id=eq.' + id, {
+      method: 'DELETE', headers: this.headers
+    });
+    if (!res.ok) throw new Error(await res.text());
+    return true;
+  }
+};
+
+// ── CONFIG LOCAL ──
+const CFG_PADRAO = { usuario:'alessandra', senha:'bgImoveis2025', wpp:'5535992261306', wppExib:'(35) 9 9226-1306', email:'sobreiro.1720@gmail.com', ig:'alepaixao', nome:'Alessandra Paixão', imob:'BG Imóveis', creci:'CRECI PJ 4047', cidade:'Poços de Caldas MG' };
+function getCfg() { return JSON.parse(localStorage.getItem('ap_cfg') || JSON.stringify(CFG_PADRAO)); }
+function setCfg(c) { localStorage.setItem('ap_cfg', JSON.stringify(c)); }
+</script>
+
+<!-- LOGIN -->
 <div id="login-screen">
   <div class="login-box">
     <div class="login-logo">Alessandra Paixão</div>
@@ -849,15 +199,13 @@
     <label class="login-label">Usuário</label>
     <input type="text" class="login-input" id="login-user" placeholder="admin" autocomplete="username">
     <label class="login-label">Senha</label>
-    <input type="password" class="login-input" id="login-pass" placeholder="••••••••" autocomplete="current-password"
-      onkeydown="if(event.key==='Enter') fazerLogin()">
+    <input type="password" class="login-input" id="login-pass" placeholder="••••••••" autocomplete="current-password" onkeydown="if(event.key==='Enter') fazerLogin()">
     <button class="login-btn" onclick="fazerLogin()">Entrar no painel</button>
     <div class="login-error" id="login-error"></div>
-    <div class="login-hint">Credenciais definidas nas configurações do sistema</div>
   </div>
 </div>
 
-<!-- ── APP ── -->
+<!-- SIDEBAR -->
 <aside class="sidebar">
   <div class="sidebar-brand">
     <span class="name">Alessandra Paixão</span>
@@ -901,460 +249,178 @@
 <div class="main">
   <div class="topbar">
     <div class="topbar-title" id="topbar-title">Dashboard</div>
-    <div class="topbar-actions" id="topbar-actions"></div>
   </div>
   <div class="content">
 
-    <!-- ── DASHBOARD ── -->
+    <!-- DASHBOARD -->
     <div class="page active" id="page-dashboard">
-      <div class="stats-grid" id="stats-grid">
-        <div class="stat-card">
-          <div class="stat-label">Total de imóveis</div>
-          <div class="stat-value" id="stat-total">0</div>
-          <div class="stat-sub">cadastrados</div>
-        </div>
-        <div class="stat-card">
-          <div class="stat-label">Ativos na vitrine</div>
-          <div class="stat-value" id="stat-ativos">0</div>
-          <div class="stat-sub">visíveis ao público</div>
-        </div>
-        <div class="stat-card">
-          <div class="stat-label">Proprietários</div>
-          <div class="stat-value" id="stat-prop">0</div>
-          <div class="stat-sub">cadastrados</div>
-        </div>
-        <div class="stat-card">
-          <div class="stat-label">Valor em carteira</div>
-          <div class="stat-value" id="stat-valor">R$ 0</div>
-          <div class="stat-sub">soma dos imóveis ativos</div>
-        </div>
+      <div class="stats-grid">
+        <div class="stat-card"><div class="stat-label">Total de imóveis</div><div class="stat-value" id="stat-total">—</div><div class="stat-sub">cadastrados</div></div>
+        <div class="stat-card"><div class="stat-label">Ativos na vitrine</div><div class="stat-value" id="stat-ativos">—</div><div class="stat-sub">visíveis ao público</div></div>
+        <div class="stat-card"><div class="stat-label">Proprietários</div><div class="stat-value" id="stat-prop">—</div><div class="stat-sub">cadastrados</div></div>
+        <div class="stat-card"><div class="stat-label">Valor em carteira</div><div class="stat-value" id="stat-valor">—</div><div class="stat-sub">imóveis ativos</div></div>
       </div>
-
       <div class="table-header">
-        <div class="table-title" style="font-family:var(--font-display);font-size:20px;">Últimos imóveis adicionados</div>
-        <button class="btn-gold" onclick="abrirDrawer()">
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
-          Novo imóvel
-        </button>
+        <div class="table-title">Últimos imóveis</div>
+        <button class="btn-gold" onclick="abrirDrawer()"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>Novo imóvel</button>
       </div>
-      <div class="table-wrap">
-        <table>
-          <thead><tr>
-            <th>Imóvel</th><th>Tipo</th><th>Bairro</th><th>Preço</th><th>Status</th><th>Ações</th>
-          </tr></thead>
-          <tbody id="tabela-dashboard"></tbody>
-        </table>
-      </div>
+      <div class="table-wrap"><table><thead><tr><th>Imóvel</th><th>Tipo</th><th>Bairro</th><th>Preço</th><th>Status</th><th>Ações</th></tr></thead><tbody id="tabela-dashboard"></tbody></table></div>
     </div>
 
-    <!-- ── IMÓVEIS ── -->
+    <!-- IMÓVEIS -->
     <div class="page" id="page-imoveis">
       <div class="table-header">
         <div class="search-box">
           <input type="text" class="search-input" placeholder="Buscar imóvel..." oninput="buscarImoveis(this.value)">
-          <div class="search-btn">
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
-          </div>
+          <div class="search-btn"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg></div>
         </div>
-        <button class="btn-gold" onclick="abrirDrawer()">
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
-          Cadastrar imóvel
-        </button>
+        <button class="btn-gold" onclick="abrirDrawer()"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>Cadastrar imóvel</button>
       </div>
       <div class="table-wrap">
-        <table>
-          <thead><tr>
-            <th>Imóvel</th><th>Tipo</th><th>Bairro</th><th>Área</th><th>Preço</th><th>Status</th><th>Ações</th>
-          </tr></thead>
-          <tbody id="tabela-imoveis"></tbody>
-        </table>
-        <div id="empty-imoveis" class="empty-state" style="display:none;">
-          <div class="empty-icon">
-            <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/></svg>
-          </div>
-          <div class="empty-title">Nenhum imóvel cadastrado ainda</div>
-          <div class="empty-sub">Clique em "Cadastrar imóvel" para começar</div>
-        </div>
+        <table><thead><tr><th>Imóvel</th><th>Tipo</th><th>Bairro</th><th>Área</th><th>Preço</th><th>Status</th><th>Ações</th></tr></thead><tbody id="tabela-imoveis"></tbody></table>
+        <div id="empty-imoveis" class="empty-state" style="display:none;"><div class="empty-icon"><svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/></svg></div><div class="empty-title">Nenhum imóvel cadastrado</div><div class="empty-sub">Clique em "Cadastrar imóvel" para começar</div></div>
       </div>
     </div>
 
-    <!-- ── PROPRIETÁRIOS ── -->
+    <!-- PROPRIETÁRIOS -->
     <div class="page" id="page-proprietarios">
       <div class="table-header">
-        <div class="table-title" style="font-family:var(--font-display);font-size:20px;">
-          Proprietários cadastrados
-        </div>
-        <div style="display:flex;align-items:center;gap:8px;">
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="var(--gold)" stroke-width="1.5"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
-          <span style="font-size:10px;color:var(--gray);letter-spacing:1px;">Dados confidenciais — somente administrador</span>
-        </div>
+        <div class="table-title">Proprietários cadastrados</div>
+        <div style="display:flex;align-items:center;gap:8px;"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="var(--gold)" stroke-width="1.5"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg><span style="font-size:10px;color:var(--gray);letter-spacing:1px;">Dados confidenciais — somente administrador</span></div>
       </div>
       <div class="table-wrap">
-        <table>
-          <thead><tr>
-            <th>Nome do proprietário</th><th>Contato</th><th>Imóveis</th><th>Endereço</th><th>Ações</th>
-          </tr></thead>
-          <tbody id="tabela-prop"></tbody>
-        </table>
-        <div id="empty-prop" class="empty-state" style="display:none;">
-          <div class="empty-icon">
-            <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/></svg>
-          </div>
-          <div class="empty-title">Nenhum proprietário cadastrado</div>
-          <div class="empty-sub">Os proprietários são cadastrados ao adicionar um imóvel</div>
-        </div>
+        <table><thead><tr><th>Proprietário</th><th>Contato</th><th>Imóveis</th><th>Endereço</th></tr></thead><tbody id="tabela-prop"></tbody></table>
+        <div id="empty-prop" class="empty-state" style="display:none;"><div class="empty-icon"><svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/></svg></div><div class="empty-title">Nenhum proprietário</div><div class="empty-sub">Cadastre imóveis com dados do proprietário</div></div>
       </div>
     </div>
 
-    <!-- ── CONFIGURAÇÕES ── -->
+    <!-- CONFIGURAÇÕES -->
     <div class="page" id="page-configuracoes">
       <div class="config-grid">
-
         <div class="config-card">
-          <div class="config-card-title">
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 013.07 9.93 19.79 19.79 0 01.22 1.32 2 2 0 012.22 0h3a2 2 0 012 1.72c.127.96.361 1.903.7 2.81a2 2 0 01-.45 2.11L6.91 7.09a16 16 0 006 6l.56-.56a2 2 0 012.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0122 14.92z"/></svg>
-            Contato
-          </div>
-          <div class="form-group" style="margin-bottom:16px;">
-            <label class="form-label">WhatsApp (com DDI e DDD)</label>
-            <input class="form-input" id="cfg-wpp" type="text" placeholder="5535992261306" oninput="configChanged()">
-          </div>
-          <div class="form-group" style="margin-bottom:16px;">
-            <label class="form-label">WhatsApp (como exibir na tela)</label>
-            <input class="form-input" id="cfg-wpp-exib" type="text" placeholder="(35) 9 9226-1306" oninput="configChanged()">
-          </div>
-          <div class="form-group" style="margin-bottom:16px;">
-            <label class="form-label">E-mail</label>
-            <input class="form-input" id="cfg-email" type="email" placeholder="seu@email.com" oninput="configChanged()">
-          </div>
-          <div class="form-group">
-            <label class="form-label">Instagram (sem @)</label>
-            <input class="form-input" id="cfg-ig" type="text" placeholder="alepaixao" oninput="configChanged()">
-          </div>
+          <div class="config-card-title"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 013.07 9.93 19.79 19.79 0 01.22 1.32 2 2 0 012.22 0h3a2 2 0 012 1.72c.127.96.361 1.903.7 2.81a2 2 0 01-.45 2.11L6.91 7.09a16 16 0 006 6l.56-.56a2 2 0 012.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0122 14.92z"/></svg>Contato</div>
+          <div class="form-group" style="margin-bottom:16px;"><label class="form-label">WhatsApp (DDI+DDD+número)</label><input class="form-input" id="cfg-wpp" type="text" oninput="configChanged()"></div>
+          <div class="form-group" style="margin-bottom:16px;"><label class="form-label">WhatsApp (como exibir)</label><input class="form-input" id="cfg-wpp-exib" type="text" oninput="configChanged()"></div>
+          <div class="form-group" style="margin-bottom:16px;"><label class="form-label">E-mail</label><input class="form-input" id="cfg-email" type="email" oninput="configChanged()"></div>
+          <div class="form-group"><label class="form-label">Instagram (sem @)</label><input class="form-input" id="cfg-ig" type="text" oninput="configChanged()"></div>
         </div>
-
         <div class="config-card">
-          <div class="config-card-title">
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="10"/><path d="M12 2a14.5 14.5 0 010 20M2 12h20"/></svg>
-            Site
-          </div>
-          <div class="form-group" style="margin-bottom:16px;">
-            <label class="form-label">Nome da corretora</label>
-            <input class="form-input" id="cfg-nome" type="text" placeholder="Alessandra Paixão" oninput="configChanged()">
-          </div>
-          <div class="form-group" style="margin-bottom:16px;">
-            <label class="form-label">Imobiliária</label>
-            <input class="form-input" id="cfg-imob" type="text" placeholder="BG Imóveis" oninput="configChanged()">
-          </div>
-          <div class="form-group" style="margin-bottom:16px;">
-            <label class="form-label">CRECI</label>
-            <input class="form-input" id="cfg-creci" type="text" placeholder="CRECI PJ 4047" oninput="configChanged()">
-          </div>
-          <div class="form-group">
-            <label class="form-label">Cidade / Região</label>
-            <input class="form-input" id="cfg-cidade" type="text" placeholder="Poços de Caldas MG" oninput="configChanged()">
-          </div>
+          <div class="config-card-title"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0110 0v4"/></svg>Acesso ao painel</div>
+          <div class="form-group" style="margin-bottom:16px;"><label class="form-label">Usuário</label><input class="form-input" id="cfg-user" type="text" oninput="configChanged()"></div>
+          <div class="form-group" style="margin-bottom:16px;"><label class="form-label">Senha atual</label><input class="form-input" id="cfg-pass-atual" type="password" placeholder="••••••••"></div>
+          <div class="form-group" style="margin-bottom:16px;"><label class="form-label">Nova senha</label><input class="form-input" id="cfg-pass-new" type="password" placeholder="Nova senha" oninput="configChanged()"></div>
+          <div class="form-group"><label class="form-label">Confirmar nova senha</label><input class="form-input" id="cfg-pass-conf" type="password" placeholder="Repita" oninput="configChanged()"></div>
         </div>
-
-        <div class="config-card">
-          <div class="config-card-title">
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="3"/><path d="M12 1v4M12 19v4M4.22 4.22l2.83 2.83M16.95 16.95l2.83 2.83M1 12h4M19 12h4M4.22 19.78l2.83-2.83M16.95 7.05l2.83-2.83"/></svg>
-            Cores do site
-          </div>
-          <div class="config-color-row">
-            <input type="color" id="cfg-cor-gold" value="#C9A84C" oninput="configChanged(); previewColor(this)">
-            <div style="flex:1;">
-              <div style="font-size:11px;color:var(--gray-light);">Cor dourada (principal)</div>
-              <div style="font-size:10px;color:var(--gray);">Botões, destaques, bordas</div>
-            </div>
-          </div>
-          <div class="config-color-row">
-            <input type="color" id="cfg-cor-dark" value="#0A0A0A" oninput="configChanged()">
-            <div style="flex:1;">
-              <div style="font-size:11px;color:var(--gray-light);">Cor de fundo (base)</div>
-              <div style="font-size:10px;color:var(--gray);">Fundo principal do site</div>
-            </div>
-          </div>
-          <div style="margin-top:16px;padding:12px;background:var(--dark-3);border-left:2px solid var(--gold);">
-            <p style="font-size:10px;color:var(--gray);line-height:1.6;">
-              Após salvar as cores aqui, cole os valores HEX no arquivo <code style="color:var(--gold-light);">index.html</code> nas variáveis <code style="color:var(--gold-light);">--gold</code> e <code style="color:var(--gold-light);">--dark</code> do CSS.
-            </p>
-          </div>
-        </div>
-
-        <div class="config-card">
-          <div class="config-card-title">
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0110 0v4"/></svg>
-            Acesso ao painel
-          </div>
-          <div class="form-group" style="margin-bottom:16px;">
-            <label class="form-label">Usuário admin</label>
-            <input class="form-input" id="cfg-login-user" type="text" placeholder="admin" oninput="configChanged()">
-          </div>
-          <div class="form-group" style="margin-bottom:16px;">
-            <label class="form-label">Senha atual</label>
-            <input class="form-input" id="cfg-login-pass-atual" type="password" placeholder="••••••••">
-          </div>
-          <div class="form-group" style="margin-bottom:16px;">
-            <label class="form-label">Nova senha</label>
-            <input class="form-input" id="cfg-login-pass-new" type="password" placeholder="Nova senha" oninput="configChanged()">
-          </div>
-          <div class="form-group">
-            <label class="form-label">Confirmar nova senha</label>
-            <input class="form-input" id="cfg-login-pass-conf" type="password" placeholder="Repita a nova senha" oninput="configChanged()">
-          </div>
-        </div>
-
       </div>
       <div style="height:80px;"></div>
     </div>
 
-  </div><!-- /content -->
-</div><!-- /main -->
+  </div>
+</div>
 
-<!-- ── DRAWER CADASTRO DE IMÓVEL ── -->
+<!-- DRAWER -->
 <div class="drawer-overlay" id="drawer-overlay" onclick="fecharDrawer(event)">
-  <div class="drawer" id="drawer">
+  <div class="drawer">
     <div class="drawer-header">
-      <div>
-        <div class="drawer-title" id="drawer-title">Cadastrar <em>imóvel</em></div>
-        <div style="font-size:10px;color:var(--gray);margin-top:4px;" id="drawer-sub">Preencha todas as informações</div>
-      </div>
+      <div><div class="drawer-title" id="drawer-title">Cadastrar <em>imóvel</em></div></div>
       <button class="drawer-close" onclick="fecharDrawer()">✕</button>
     </div>
-
     <div class="drawer-body">
-
-      <!-- FOTOS -->
       <div class="form-section">
         <div class="form-section-title">Fotos do imóvel</div>
-        <div class="upload-area" id="upload-area">
-          <input type="file" id="input-fotos" accept="image/*" multiple onchange="handleFotos(this)">
-          <div class="upload-icon">
-            <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="var(--gold)" stroke-width="1"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="M21 15l-5-5L5 21"/></svg>
-          </div>
-          <div class="upload-text"><strong>Clique para adicionar fotos</strong><br>ou arraste e solte aqui · JPG, PNG · até 10 fotos</div>
-        </div>
+        <div class="upload-area"><input type="file" id="input-fotos" accept="image/*" multiple onchange="handleFotos(this)"><div class="upload-icon"><svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="var(--gold)" stroke-width="1"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="M21 15l-5-5L5 21"/></svg></div><div class="upload-text"><strong>Clique para adicionar fotos</strong><br>JPG, PNG · até 10 fotos</div></div>
         <div class="fotos-preview" id="fotos-preview"></div>
       </div>
-
-      <!-- INFORMAÇÕES DO IMÓVEL -->
       <div class="form-section">
         <div class="form-section-title">Informações do imóvel</div>
-        <div class="form-row full">
-          <div class="form-group">
-            <label class="form-label">Título do anúncio <span>*</span></label>
-            <input class="form-input" id="f-titulo" type="text" placeholder="Ex: Casa com piscina em condomínio fechado">
-          </div>
-        </div>
+        <div class="form-row full"><div class="form-group"><label class="form-label">Título <span>*</span></label><input class="form-input" id="f-titulo" type="text" placeholder="Ex: Casa com piscina em condomínio fechado"></div></div>
         <div class="form-row">
-          <div class="form-group">
-            <label class="form-label">Tipo <span>*</span></label>
-            <select class="form-select" id="f-tipo">
-              <option value="">Selecione...</option>
-              <option>Casa</option>
-              <option>Apartamento</option>
-              <option>Terreno</option>
-            </select>
-          </div>
-          <div class="form-group">
-            <label class="form-label">Preço de venda (R$) <span>*</span></label>
-            <input class="form-input" id="f-preco" type="text" placeholder="Ex: 850000" oninput="mascaraPreco(this)">
-          </div>
+          <div class="form-group"><label class="form-label">Tipo <span>*</span></label><select class="form-select" id="f-tipo"><option value="">Selecione...</option><option>Casa</option><option>Apartamento</option><option>Terreno</option></select></div>
+          <div class="form-group"><label class="form-label">Preço (R$) <span>*</span></label><input class="form-input" id="f-preco" type="text" placeholder="Ex: 850.000" oninput="mascaraPreco(this)"></div>
         </div>
         <div class="form-row three">
-          <div class="form-group">
-            <label class="form-label">Área total (m²)</label>
-            <input class="form-input" id="f-area" type="number" placeholder="Ex: 200">
-          </div>
-          <div class="form-group">
-            <label class="form-label">Quartos</label>
-            <input class="form-input" id="f-quartos" type="number" placeholder="Ex: 3">
-          </div>
-          <div class="form-group">
-            <label class="form-label">Suítes</label>
-            <input class="form-input" id="f-suites" type="number" placeholder="Ex: 1">
-          </div>
+          <div class="form-group"><label class="form-label">Área (m²)</label><input class="form-input" id="f-area" type="number" placeholder="200"></div>
+          <div class="form-group"><label class="form-label">Quartos</label><input class="form-input" id="f-quartos" type="number" placeholder="3"></div>
+          <div class="form-group"><label class="form-label">Suítes</label><input class="form-input" id="f-suites" type="number" placeholder="1"></div>
         </div>
         <div class="form-row three">
-          <div class="form-group">
-            <label class="form-label">Vagas de garagem</label>
-            <input class="form-input" id="f-vagas" type="number" placeholder="Ex: 2">
-          </div>
-          <div class="form-group">
-            <label class="form-label">Banheiros</label>
-            <input class="form-input" id="f-banheiros" type="number" placeholder="Ex: 2">
-          </div>
-          <div class="form-group">
-            <label class="form-label">Status</label>
-            <select class="form-select" id="f-status">
-              <option value="ativo">Ativo (visível)</option>
-              <option value="inativo">Inativo (oculto)</option>
-              <option value="rascunho">Rascunho</option>
-            </select>
-          </div>
+          <div class="form-group"><label class="form-label">Vagas</label><input class="form-input" id="f-vagas" type="number" placeholder="2"></div>
+          <div class="form-group"><label class="form-label">Banheiros</label><input class="form-input" id="f-banheiros" type="number" placeholder="2"></div>
+          <div class="form-group"><label class="form-label">Status</label><select class="form-select" id="f-status"><option value="ativo">Ativo (visível)</option><option value="inativo">Inativo (oculto)</option><option value="rascunho">Rascunho</option></select></div>
         </div>
         <div class="form-row">
-          <div class="form-group">
-            <label class="form-label">Bairro <span>*</span></label>
-            <input class="form-input" id="f-bairro" type="text" placeholder="Ex: Jardim Elite">
-          </div>
-          <div class="form-group">
-            <label class="form-label">Cidade <span>*</span></label>
-            <input class="form-input" id="f-cidade" type="text" placeholder="Poços de Caldas" value="Poços de Caldas">
-          </div>
+          <div class="form-group"><label class="form-label">Bairro <span>*</span></label><input class="form-input" id="f-bairro" type="text" placeholder="Ex: Jardim Elite"></div>
+          <div class="form-group"><label class="form-label">Cidade</label><input class="form-input" id="f-cidade" type="text" value="Poços de Caldas"></div>
         </div>
-        <div class="form-row full">
-          <div class="form-group">
-            <label class="form-label">Endereço completo (interno — não aparece na vitrine)</label>
-            <input class="form-input" id="f-endereco" type="text" placeholder="Rua, número, complemento">
-          </div>
-        </div>
-        <div class="form-row full">
-          <div class="form-group">
-            <label class="form-label">Descrição do imóvel <span>*</span></label>
-            <textarea class="form-textarea" id="f-descricao" placeholder="Descreva os diferenciais do imóvel, acabamentos, localização..."></textarea>
-          </div>
-        </div>
+        <div class="form-row full"><div class="form-group"><label class="form-label">Endereço completo (interno)</label><input class="form-input" id="f-endereco" type="text" placeholder="Rua, número, complemento"></div></div>
+        <div class="form-row full"><div class="form-group"><label class="form-label">Descrição <span>*</span></label><textarea class="form-textarea" id="f-descricao" placeholder="Descreva os diferenciais do imóvel..."></textarea></div></div>
         <div class="form-row">
-          <div class="form-group">
-            <label class="form-label">Destaque na vitrine?</label>
-            <select class="form-select" id="f-destaque">
-              <option value="nao">Não</option>
-              <option value="sim">Sim — exibir em destaque</option>
-            </select>
-          </div>
-          <div class="form-group">
-            <label class="form-label">Código interno</label>
-            <input class="form-input" id="f-codigo" type="text" placeholder="Ex: AP001" readonly style="color:var(--gray);">
-          </div>
+          <div class="form-group"><label class="form-label">Destaque na vitrine?</label><select class="form-select" id="f-destaque"><option value="false">Não</option><option value="true">Sim — exibir em destaque</option></select></div>
+          <div class="form-group"><label class="form-label">Código interno</label><input class="form-input" id="f-codigo" type="text" readonly style="color:var(--gray);"></div>
         </div>
       </div>
-
-      <!-- PROPRIETÁRIO (confidencial) -->
       <div class="form-section">
-        <div class="form-section-title">
-          Dados do proprietário
-          <span style="font-size:8px;color:var(--gray);font-weight:400;margin-left:8px;letter-spacing:1px;">— CONFIDENCIAL, não aparece na vitrine</span>
-        </div>
+        <div class="form-section-title">Dados do proprietário <span style="font-size:8px;color:var(--gray);font-weight:400;margin-left:8px;letter-spacing:1px;">— CONFIDENCIAL</span></div>
         <div class="prop-section">
-          <div class="prop-notice">
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="var(--gold)" stroke-width="1.5"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
-            Essas informações ficam salvas apenas no sistema e são visíveis somente para você.
-          </div>
+          <div class="prop-notice"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="var(--gold)" stroke-width="1.5"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>Visível somente para você no painel.</div>
           <div class="form-row">
-            <div class="form-group">
-              <label class="form-label">Nome do proprietário</label>
-              <input class="form-input" id="f-prop-nome" type="text" placeholder="Nome completo">
-            </div>
-            <div class="form-group">
-              <label class="form-label">Telefone / WhatsApp</label>
-              <input class="form-input" id="f-prop-tel" type="text" placeholder="(35) 9 9999-9999">
-            </div>
+            <div class="form-group"><label class="form-label">Nome do proprietário</label><input class="form-input" id="f-prop-nome" type="text"></div>
+            <div class="form-group"><label class="form-label">Telefone</label><input class="form-input" id="f-prop-tel" type="text"></div>
           </div>
-          <div class="form-row full">
-            <div class="form-group">
-              <label class="form-label">Endereço do proprietário</label>
-              <input class="form-input" id="f-prop-end" type="text" placeholder="Rua, número, bairro, cidade">
-            </div>
-          </div>
+          <div class="form-row full"><div class="form-group"><label class="form-label">Endereço do proprietário</label><input class="form-input" id="f-prop-end" type="text"></div></div>
           <div class="form-row">
-            <div class="form-group">
-              <label class="form-label">CPF / CNPJ</label>
-              <input class="form-input" id="f-prop-cpf" type="text" placeholder="000.000.000-00">
-            </div>
-            <div class="form-group">
-              <label class="form-label">E-mail do proprietário</label>
-              <input class="form-input" id="f-prop-email" type="email" placeholder="proprietario@email.com">
-            </div>
+            <div class="form-group"><label class="form-label">CPF / CNPJ</label><input class="form-input" id="f-prop-cpf" type="text"></div>
+            <div class="form-group"><label class="form-label">E-mail</label><input class="form-input" id="f-prop-email" type="email"></div>
           </div>
-          <div class="form-row full">
-            <div class="form-group">
-              <label class="form-label">Observações internas</label>
-              <textarea class="form-textarea" id="f-prop-obs" style="min-height:70px;" placeholder="Anotações sobre o proprietário ou o imóvel (só você vê)..."></textarea>
-            </div>
-          </div>
+          <div class="form-row full"><div class="form-group"><label class="form-label">Observações internas</label><textarea class="form-textarea" id="f-prop-obs" style="min-height:70px;"></textarea></div></div>
         </div>
       </div>
-
-    </div><!-- /drawer-body -->
-
+    </div>
     <div class="drawer-footer">
-      <button class="btn-gold" onclick="salvarImovel()">
-        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
-        Salvar imóvel
-      </button>
+      <button class="btn-gold" onclick="salvarImovel()"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>Salvar imóvel</button>
       <button class="btn-outline" onclick="fecharDrawer()">Cancelar</button>
-      <button class="btn-danger" id="btn-excluir-drawer" style="display:none;margin-left:auto;" onclick="confirmarExclusao(editandoId)">
-        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 01-2 2H8a2 2 0 01-2-2L5 6"/><path d="M10 11v6M14 11v6"/></svg>
-        Excluir
-      </button>
+      <button class="btn-danger" id="btn-excluir-drawer" style="display:none;margin-left:auto;" onclick="confirmarExclusao(editandoId)"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 01-2 2H8a2 2 0 01-2-2L5 6"/></svg>Excluir</button>
     </div>
   </div>
 </div>
 
-<!-- ── CONFIRM MODAL ── -->
+<!-- CONFIRM -->
 <div class="confirm-overlay" id="confirm-overlay">
   <div class="confirm-box">
     <div class="confirm-title">Excluir imóvel?</div>
-    <div class="confirm-text" id="confirm-text">Esta ação não pode ser desfeita. O imóvel será removido permanentemente do sistema.</div>
-    <div class="confirm-actions">
-      <button class="btn-danger" onclick="executarExclusao()">Sim, excluir</button>
-      <button class="btn-outline" onclick="fecharConfirm()">Cancelar</button>
-    </div>
+    <div class="confirm-text" id="confirm-text">Esta ação não pode ser desfeita.</div>
+    <div class="confirm-actions"><button class="btn-danger" onclick="executarExclusao()">Sim, excluir</button><button class="btn-outline" onclick="fecharConfirm()">Cancelar</button></div>
   </div>
 </div>
 
-<!-- BARRA CONFIG SAVE -->
+<!-- CONFIG SAVE BAR -->
 <div class="config-save-bar" id="config-save-bar">
-  <div class="config-changed-notice">
-    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
-    Você tem alterações não salvas
-  </div>
-  <div style="display:flex;gap:12px;">
-    <button class="btn-outline" onclick="cancelarConfig()">Descartar</button>
-    <button class="btn-gold" onclick="salvarConfig()">Salvar configurações</button>
-  </div>
+  <div class="config-changed-notice"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>Alterações não salvas</div>
+  <div style="display:flex;gap:12px;"><button class="btn-outline" onclick="cancelarConfig()">Descartar</button><button class="btn-gold" onclick="salvarConfig()">Salvar configurações</button></div>
+</div>
+
+<!-- SAVING OVERLAY -->
+<div class="saving-overlay" id="saving-overlay">
+  <div class="saving-spinner"></div>
+  <div class="saving-text">Salvando no banco de dados...</div>
 </div>
 
 <!-- TOAST -->
 <div class="toast" id="toast">
   <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--gold)" stroke-width="1.5"><polyline points="20 6 9 17 4 12"/></svg>
-  <div>
-    <div class="toast-text" id="toast-text">Salvo com sucesso!</div>
-    <div class="toast-sub" id="toast-sub"></div>
-  </div>
+  <div><div class="toast-text" id="toast-text">Salvo!</div><div class="toast-sub" id="toast-sub"></div></div>
 </div>
 
 <script>
-// ╔══════════════════════════════════════════════════════════════════╗
-// ║  CONFIGURAÇÕES DO SISTEMA — EDITE AQUI SE NECESSÁRIO           ║
-// ║  (as configurações também ficam salvas no painel de config)    ║
-// ╚══════════════════════════════════════════════════════════════════╝
-const ADMIN_CONFIG_PADRAO = {
-  usuario: 'alessandra',
-  senha:   'bgImoveis2025',
-  wpp:     '5535992261306',
-  wppExib: '(35) 9 9226-1306',
-  email:   'sobreiro.1720@gmail.com',
-  ig:      'alepaixao',
-  nome:    'Alessandra Paixão',
-  imob:    'BG Imóveis',
-  creci:   'CRECI PJ 4047',
-  cidade:  'Poços de Caldas MG',
-};
-
-// ── STORAGE (localStorage — salva no navegador) ──
-function getConfig() {
-  return JSON.parse(localStorage.getItem('ap_config') || JSON.stringify(ADMIN_CONFIG_PADRAO));
-}
-function setConfig(c) { localStorage.setItem('ap_config', JSON.stringify(c)); }
-function getImoveis() { return JSON.parse(localStorage.getItem('ap_imoveis') || '[]'); }
-function setImoveis(d) { localStorage.setItem('ap_imoveis', JSON.stringify(d)); }
+let todosImoveis = [];
+let editandoId   = null;
+let excluindoId  = null;
+let fotosBase64  = [];
+let buscaAtual   = '';
 
 // ── LOGIN ──
 function fazerLogin() {
-  const cfg = getConfig();
+  const cfg = getCfg();
   const u = document.getElementById('login-user').value.trim();
   const p = document.getElementById('login-pass').value;
   if (u === cfg.usuario && p === cfg.senha) {
@@ -1366,67 +432,65 @@ function fazerLogin() {
   }
 }
 function fazerLogout() {
-  document.getElementById('login-screen').classList.remove('hidden');
-  document.getElementById('login-pass').value = '';
-  document.getElementById('login-error').textContent = '';
+  location.reload();
 }
-
-// ── NAVEGAÇÃO ──
-let paginaAtual = 'dashboard';
-const titulos = {
-  dashboard: 'Dashboard',
-  imoveis: 'Imóveis',
-  proprietarios: 'Proprietários',
-  configuracoes: 'Configurações',
-};
-function goTo(page) {
-  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
-  document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
-  document.getElementById('page-' + page).classList.add('active');
-  document.querySelectorAll('.nav-item').forEach(n => {
-    if (n.getAttribute('onclick') && n.getAttribute('onclick').includes("'" + page + "'"))
-      n.classList.add('active');
-  });
-  document.getElementById('topbar-title').textContent = titulos[page] || page;
-  paginaAtual = page;
-  if (page === 'configuracoes') carregarConfig();
-  if (page === 'proprietarios') renderProprietarios();
-  if (page === 'imoveis') renderImoveis();
-  if (page === 'dashboard') renderDashboard();
-  document.getElementById('config-save-bar').classList.remove('visible');
-}
+document.getElementById('login-user').addEventListener('keydown', e => { if(e.key==='Enter') document.getElementById('login-pass').focus(); });
 
 // ── TOAST ──
 let toastTimer;
-function showToast(msg, sub = '', tipo = 'success') {
+function showToast(msg, sub='', tipo='') {
   clearTimeout(toastTimer);
   const t = document.getElementById('toast');
   document.getElementById('toast-text').textContent = msg;
-  document.getElementById('toast-sub').textContent = sub;
+  document.getElementById('toast-sub').textContent  = sub;
   t.className = 'toast show ' + tipo;
   toastTimer = setTimeout(() => t.classList.remove('show'), 3500);
 }
 
-// ── DRAWER ──
-let editandoId = null;
-let fotosBase64 = [];
+// ── SAVING ──
+function showSaving(v) { document.getElementById('saving-overlay').classList.toggle('show', v); }
 
+// ── NAVEGAÇÃO ──
+const titulos = { dashboard:'Dashboard', imoveis:'Imóveis', proprietarios:'Proprietários', configuracoes:'Configurações' };
+function goTo(page) {
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+  document.getElementById('page-' + page).classList.add('active');
+  document.querySelectorAll('.nav-item').forEach(n => { if(n.getAttribute('onclick')&&n.getAttribute('onclick').includes("'"+page+"'")) n.classList.add('active'); });
+  document.getElementById('topbar-title').textContent = titulos[page] || page;
+  document.getElementById('config-save-bar').classList.remove('visible');
+  if (page === 'configuracoes') carregarConfig();
+  if (page === 'proprietarios') renderProprietarios();
+  if (page === 'imoveis') renderImoveis(todosImoveis);
+  if (page === 'dashboard') renderDashboard();
+}
+
+// ── CARREGAR IMÓVEIS DO SUPABASE ──
+async function carregarTodos() {
+  try {
+    todosImoveis = await supa.get('imoveis', '?order=created_at.desc');
+  } catch(e) {
+    todosImoveis = [];
+    showToast('Erro ao carregar imóveis', 'Verifique a conexão', 'error');
+  }
+  atualizarBadges();
+  renderDashboard();
+}
+
+// ── DRAWER ──
 function abrirDrawer(id = null) {
   editandoId = id;
   limparDrawer();
-  const imoveis = getImoveis();
-
   if (id !== null) {
-    const im = imoveis.find(i => i.id === id);
+    const im = todosImoveis.find(i => i.id === id);
     if (im) preencherDrawer(im);
     document.getElementById('drawer-title').innerHTML = 'Editar <em>imóvel</em>';
     document.getElementById('btn-excluir-drawer').style.display = 'flex';
   } else {
     document.getElementById('drawer-title').innerHTML = 'Cadastrar <em>imóvel</em>';
     document.getElementById('btn-excluir-drawer').style.display = 'none';
-    document.getElementById('f-codigo').value = gerarCodigo();
+    document.getElementById('f-codigo').value = 'AP' + String(todosImoveis.length + 1).padStart(3,'0');
   }
-
   document.getElementById('drawer-overlay').classList.add('open');
   document.body.style.overflow = 'hidden';
 }
@@ -1439,86 +503,66 @@ function fecharDrawer(e) {
 }
 
 function limparDrawer() {
-  ['f-titulo','f-preco','f-area','f-quartos','f-suites','f-vagas','f-banheiros',
-   'f-bairro','f-descricao','f-prop-nome','f-prop-tel','f-prop-end',
-   'f-prop-cpf','f-prop-email','f-prop-obs','f-endereco']
-  .forEach(id => { const el = document.getElementById(id); if(el) el.value = ''; });
-  document.getElementById('f-tipo').value = '';
-  document.getElementById('f-status').value = 'ativo';
-  document.getElementById('f-destaque').value = 'nao';
-  document.getElementById('f-cidade').value = 'Poços de Caldas';
+  ['f-titulo','f-preco','f-area','f-quartos','f-suites','f-vagas','f-banheiros','f-bairro','f-descricao','f-endereco','f-prop-nome','f-prop-tel','f-prop-end','f-prop-cpf','f-prop-email','f-prop-obs']
+    .forEach(id => { const el = document.getElementById(id); if(el) el.value=''; });
+  document.getElementById('f-tipo').value    = '';
+  document.getElementById('f-status').value  = 'ativo';
+  document.getElementById('f-destaque').value= 'false';
+  document.getElementById('f-cidade').value  = 'Poços de Caldas';
   fotosBase64 = [];
   document.getElementById('fotos-preview').innerHTML = '';
 }
 
 function preencherDrawer(im) {
-  document.getElementById('f-titulo').value = im.titulo || '';
-  document.getElementById('f-tipo').value = im.tipo || '';
-  document.getElementById('f-preco').value = im.preco ? im.preco.toLocaleString('pt-BR') : '';
-  document.getElementById('f-area').value = im.area || '';
-  document.getElementById('f-quartos').value = im.quartos || '';
-  document.getElementById('f-suites').value = im.suites || '';
-  document.getElementById('f-vagas').value = im.vagas || '';
-  document.getElementById('f-banheiros').value = im.banheiros || '';
-  document.getElementById('f-bairro').value = im.bairro || '';
-  document.getElementById('f-cidade').value = im.cidade || 'Poços de Caldas';
-  document.getElementById('f-endereco').value = im.endereco || '';
-  document.getElementById('f-descricao').value = im.descricao || '';
-  document.getElementById('f-status').value = im.status || 'ativo';
-  document.getElementById('f-destaque').value = im.destaque ? 'sim' : 'nao';
-  document.getElementById('f-codigo').value = im.codigo || '';
-  document.getElementById('f-prop-nome').value = im.prop_nome || '';
-  document.getElementById('f-prop-tel').value = im.prop_tel || '';
-  document.getElementById('f-prop-end').value = im.prop_end || '';
-  document.getElementById('f-prop-cpf').value = im.prop_cpf || '';
-  document.getElementById('f-prop-email').value = im.prop_email || '';
-  document.getElementById('f-prop-obs').value = im.prop_obs || '';
-  fotosBase64 = im.fotos || [];
+  document.getElementById('f-titulo').value   = im.titulo || '';
+  document.getElementById('f-tipo').value     = im.tipo   || '';
+  document.getElementById('f-preco').value    = im.preco  ? Number(im.preco).toLocaleString('pt-BR') : '';
+  document.getElementById('f-area').value     = im.area   || '';
+  document.getElementById('f-quartos').value  = im.quartos|| '';
+  document.getElementById('f-suites').value   = im.suites || '';
+  document.getElementById('f-vagas').value    = im.vagas  || '';
+  document.getElementById('f-banheiros').value= im.banheiros||'';
+  document.getElementById('f-bairro').value   = im.bairro || '';
+  document.getElementById('f-cidade').value   = im.cidade || 'Poços de Caldas';
+  document.getElementById('f-endereco').value = im.endereco||'';
+  document.getElementById('f-descricao').value= im.descricao||'';
+  document.getElementById('f-status').value   = im.status || 'ativo';
+  document.getElementById('f-destaque').value = im.destaque ? 'true' : 'false';
+  document.getElementById('f-codigo').value   = im.codigo || '';
+  document.getElementById('f-prop-nome').value = im.prop_nome ||'';
+  document.getElementById('f-prop-tel').value  = im.prop_tel  ||'';
+  document.getElementById('f-prop-end').value  = im.prop_end  ||'';
+  document.getElementById('f-prop-cpf').value  = im.prop_cpf  ||'';
+  document.getElementById('f-prop-email').value= im.prop_email||'';
+  document.getElementById('f-prop-obs').value  = im.prop_obs  ||'';
+  try { fotosBase64 = im.fotos ? (typeof im.fotos==='string' ? JSON.parse(im.fotos) : im.fotos) : []; }
+  catch(e) { fotosBase64 = []; }
   renderFotosPreview();
-}
-
-function gerarCodigo() {
-  const imoveis = getImoveis();
-  const n = imoveis.length + 1;
-  return 'AP' + String(n).padStart(3,'0');
 }
 
 // ── FOTOS ──
 function handleFotos(input) {
-  const files = Array.from(input.files);
-  files.slice(0, 10 - fotosBase64.length).forEach(file => {
+  Array.from(input.files).slice(0, 10 - fotosBase64.length).forEach(file => {
     const reader = new FileReader();
-    reader.onload = e => {
-      fotosBase64.push(e.target.result);
-      renderFotosPreview();
-    };
+    reader.onload = e => { fotosBase64.push(e.target.result); renderFotosPreview(); };
     reader.readAsDataURL(file);
   });
 }
-
 function renderFotosPreview() {
-  const el = document.getElementById('fotos-preview');
-  el.innerHTML = fotosBase64.map((src, i) => `
-    <div class="foto-thumb">
-      <img src="${src}" alt="Foto ${i+1}">
-      <button class="foto-remove" onclick="removerFoto(${i})">✕</button>
-    </div>`).join('');
+  document.getElementById('fotos-preview').innerHTML = fotosBase64.map((src,i) =>
+    `<div class="foto-thumb"><img src="${src}" alt="Foto ${i+1}"><button class="foto-remove" onclick="removerFoto(${i})">✕</button></div>`
+  ).join('');
 }
+function removerFoto(i) { fotosBase64.splice(i,1); renderFotosPreview(); }
 
-function removerFoto(i) {
-  fotosBase64.splice(i, 1);
-  renderFotosPreview();
-}
-
-// ── MÁSCARA PREÇO ──
 function mascaraPreco(el) {
   let v = el.value.replace(/\D/g,'');
-  if (!v) { el.value = ''; return; }
+  if (!v) { el.value=''; return; }
   el.value = parseInt(v).toLocaleString('pt-BR');
 }
 
-// ── SALVAR IMÓVEL ──
-function salvarImovel() {
+// ── SALVAR IMÓVEL (SUPABASE) ──
+async function salvarImovel() {
   const titulo = document.getElementById('f-titulo').value.trim();
   const tipo   = document.getElementById('f-tipo').value;
   const precoStr = document.getElementById('f-preco').value.replace(/\./g,'').replace(',','.');
@@ -1526,309 +570,212 @@ function salvarImovel() {
   const bairro = document.getElementById('f-bairro').value.trim();
 
   if (!titulo || !tipo || !preco || !bairro) {
-    showToast('Preencha os campos obrigatórios', 'Título, tipo, preço e bairro são obrigatórios', 'error');
+    showToast('Campos obrigatórios', 'Título, tipo, preço e bairro são obrigatórios', 'error');
     return;
   }
 
-  const imoveis = getImoveis();
-  const novoImovel = {
-    id: editandoId !== null ? editandoId : Date.now(),
+  const dados = {
     titulo, tipo, preco,
-    area: parseInt(document.getElementById('f-area').value) || null,
-    quartos: parseInt(document.getElementById('f-quartos').value) || null,
-    suites: parseInt(document.getElementById('f-suites').value) || null,
-    vagas: parseInt(document.getElementById('f-vagas').value) || null,
+    area:      parseInt(document.getElementById('f-area').value) || null,
+    quartos:   parseInt(document.getElementById('f-quartos').value) || null,
+    suites:    parseInt(document.getElementById('f-suites').value) || null,
+    vagas:     parseInt(document.getElementById('f-vagas').value) || null,
     banheiros: parseInt(document.getElementById('f-banheiros').value) || null,
     bairro,
-    cidade: document.getElementById('f-cidade').value || 'Poços de Caldas',
-    endereco: document.getElementById('f-endereco').value,
+    cidade:    document.getElementById('f-cidade').value || 'Poços de Caldas',
+    endereco:  document.getElementById('f-endereco').value,
     descricao: document.getElementById('f-descricao').value,
-    status: document.getElementById('f-status').value,
-    destaque: document.getElementById('f-destaque').value === 'sim',
-    codigo: document.getElementById('f-codigo').value,
-    fotos: fotosBase64,
-    // Dados do proprietário (confidencial)
+    status:    document.getElementById('f-status').value,
+    destaque:  document.getElementById('f-destaque').value === 'true',
+    codigo:    document.getElementById('f-codigo').value,
+    fotos:     JSON.stringify(fotosBase64),
     prop_nome: document.getElementById('f-prop-nome').value,
-    prop_tel: document.getElementById('f-prop-tel').value,
-    prop_end: document.getElementById('f-prop-end').value,
-    prop_cpf: document.getElementById('f-prop-cpf').value,
-    prop_email: document.getElementById('f-prop-email').value,
-    prop_obs: document.getElementById('f-prop-obs').value,
-    criadoEm: editandoId !== null
-      ? (imoveis.find(i=>i.id===editandoId)||{}).criadoEm || new Date().toISOString()
-      : new Date().toISOString(),
-    atualizadoEm: new Date().toISOString(),
+    prop_tel:  document.getElementById('f-prop-tel').value,
+    prop_end:  document.getElementById('f-prop-end').value,
+    prop_cpf:  document.getElementById('f-prop-cpf').value,
+    prop_email:document.getElementById('f-prop-email').value,
+    prop_obs:  document.getElementById('f-prop-obs').value,
   };
 
-  if (editandoId !== null) {
-    const idx = imoveis.findIndex(i => i.id === editandoId);
-    if (idx >= 0) imoveis[idx] = novoImovel;
-  } else {
-    imoveis.unshift(novoImovel);
+  showSaving(true);
+  try {
+    if (editandoId !== null) {
+      await supa.update('imoveis', editandoId, dados);
+      showToast('Imóvel atualizado!', titulo);
+    } else {
+      await supa.insert('imoveis', dados);
+      showToast('Imóvel cadastrado!', titulo);
+    }
+    document.getElementById('drawer-overlay').classList.remove('open');
+    document.body.style.overflow = '';
+    editandoId = null;
+    await carregarTodos();
+    renderImoveis(todosImoveis);
+  } catch(e) {
+    showToast('Erro ao salvar', e.message, 'error');
+  } finally {
+    showSaving(false);
   }
-  setImoveis(imoveis);
-
-  fecharDrawer({target: null});
-  document.getElementById('drawer-overlay').classList.remove('open');
-  document.body.style.overflow = '';
-
-  showToast(
-    editandoId !== null ? 'Imóvel atualizado!' : 'Imóvel cadastrado!',
-    titulo
-  );
-  renderDashboard();
-  atualizarBadges();
 }
 
 // ── EXCLUIR ──
-let excluindoId = null;
 function confirmarExclusao(id) {
   excluindoId = id;
-  const imoveis = getImoveis();
-  const im = imoveis.find(i => i.id === id);
-  document.getElementById('confirm-text').textContent =
-    `Deseja excluir "${im ? im.titulo : 'este imóvel'}"? Esta ação não pode ser desfeita.`;
+  const im = todosImoveis.find(i => i.id === id);
+  document.getElementById('confirm-text').textContent = `Deseja excluir "${im?im.titulo:'este imóvel'}"? Esta ação não pode ser desfeita.`;
   document.getElementById('confirm-overlay').classList.add('open');
 }
-function fecharConfirm() {
-  document.getElementById('confirm-overlay').classList.remove('open');
-  excluindoId = null;
-}
-function executarExclusao() {
-  if (excluindoId === null) return;
-  let imoveis = getImoveis();
-  imoveis = imoveis.filter(i => i.id !== excluindoId);
-  setImoveis(imoveis);
-  fecharConfirm();
-  document.getElementById('drawer-overlay').classList.remove('open');
-  document.body.style.overflow = '';
-  showToast('Imóvel excluído', '', 'error');
-  renderDashboard();
-  renderImoveis();
-  atualizarBadges();
+function fecharConfirm() { document.getElementById('confirm-overlay').classList.remove('open'); excluindoId = null; }
+async function executarExclusao() {
+  if (!excluindoId) return;
+  showSaving(true);
+  try {
+    await supa.delete('imoveis', excluindoId);
+    fecharConfirm();
+    document.getElementById('drawer-overlay').classList.remove('open');
+    document.body.style.overflow = '';
+    showToast('Imóvel excluído', '', 'error');
+    await carregarTodos();
+    renderImoveis(todosImoveis);
+  } catch(e) {
+    showToast('Erro ao excluir', e.message, 'error');
+  } finally {
+    showSaving(false);
+  }
 }
 
-// ── RENDER HELPERS ──
+async function toggleStatus(id) {
+  const im = todosImoveis.find(i => i.id === id);
+  if (!im) return;
+  const novoStatus = im.status === 'ativo' ? 'inativo' : 'ativo';
+  showSaving(true);
+  try {
+    await supa.update('imoveis', id, { status: novoStatus });
+    showToast('Status atualizado', im.titulo);
+    await carregarTodos();
+    renderImoveis(todosImoveis);
+  } catch(e) {
+    showToast('Erro', e.message, 'error');
+  } finally {
+    showSaving(false);
+  }
+}
+
+// ── RENDER ──
 function statusBadge(s) {
-  if (s === 'ativo')    return '<span class="status-badge status-ativo">Ativo</span>';
-  if (s === 'inativo')  return '<span class="status-badge status-inativo">Inativo</span>';
+  if (s==='ativo')   return '<span class="status-badge status-ativo">Ativo</span>';
+  if (s==='inativo') return '<span class="status-badge status-inativo">Inativo</span>';
   return '<span class="status-badge status-rascunho">Rascunho</span>';
 }
 
-function toggleStatus(id) {
-  const imoveis = getImoveis();
-  const idx = imoveis.findIndex(i => i.id === id);
-  if (idx < 0) return;
-  imoveis[idx].status = imoveis[idx].status === 'ativo' ? 'inativo' : 'ativo';
-  setImoveis(imoveis);
-  renderDashboard(); renderImoveis(); atualizarBadges();
-  showToast('Status atualizado', imoveis[idx].titulo);
+function getFotoThumb(im) {
+  let fotos = [];
+  try { fotos = im.fotos ? (typeof im.fotos==='string' ? JSON.parse(im.fotos) : im.fotos) : []; } catch(e){}
+  if (fotos[0]) return `<div style="width:40px;height:40px;overflow:hidden;border:1px solid rgba(201,168,76,.1);flex-shrink:0;"><img src="${fotos[0]}" style="width:100%;height:100%;object-fit:cover;"></div>`;
+  return `<div style="width:40px;height:40px;background:var(--dark-4);border:1px solid rgba(201,168,76,.08);flex-shrink:0;display:flex;align-items:center;justify-content:center;"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="rgba(201,168,76,.3)" stroke-width="1"><rect x="3" y="3" width="18" height="18" rx="1"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="M21 15l-5-5L5 21"/></svg></div>`;
 }
 
-function linhaTabela(im, cols) {
-  const foto = im.fotos && im.fotos[0]
-    ? `<div style="width:40px;height:40px;overflow:hidden;border:1px solid rgba(201,168,76,0.1);flex-shrink:0;"><img src="${im.fotos[0]}" style="width:100%;height:100%;object-fit:cover;"></div>`
-    : `<div style="width:40px;height:40px;background:var(--dark-4);border:1px solid rgba(201,168,76,0.08);flex-shrink:0;display:flex;align-items:center;justify-content:center;"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="rgba(201,168,76,0.3)" stroke-width="1"><rect x="3" y="3" width="18" height="18" rx="1"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="M21 15l-5-5L5 21"/></svg></div>`;
-
-  let tds = `
-    <td>
-      <div style="display:flex;align-items:center;gap:12px;">
-        ${foto}
-        <div>
-          <div class="td-nome">${im.titulo}</div>
-          <div style="font-size:10px;color:var(--gray);margin-top:2px;">${im.codigo || ''}</div>
-        </div>
-      </div>
-    </td>
+function linhaTabela(im, full=false) {
+  return `<tr>
+    <td><div style="display:flex;align-items:center;gap:12px;">${getFotoThumb(im)}<div><div class="td-nome">${im.titulo}</div><div style="font-size:10px;color:var(--gray);margin-top:2px;">${im.codigo||''}</div></div></div></td>
     <td><span class="td-tipo">${im.tipo}</span></td>
-    <td>${im.bairro}</td>`;
-
-  if (cols === 'full') tds += `<td>${im.area ? im.area + ' m²' : '—'}</td>`;
-
-  tds += `
-    <td><span class="td-preco">R$ ${(im.preco||0).toLocaleString('pt-BR')}</span></td>
+    <td>${im.bairro}</td>
+    ${full ? `<td>${im.area?im.area+' m²':'—'}</td>` : ''}
+    <td><span class="td-preco">R$ ${Number(im.preco||0).toLocaleString('pt-BR')}</span></td>
     <td>${statusBadge(im.status)}</td>
-    <td>
-      <div class="action-btns">
-        <button class="action-btn" title="Editar" onclick="abrirDrawer(${im.id})">
-          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M11 4H4a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 013 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
-        </button>
-        <button class="action-btn" title="${im.status==='ativo'?'Desativar':'Ativar'}" onclick="toggleStatus(${im.id})">
-          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
-        </button>
-        <button class="action-btn danger" title="Excluir" onclick="confirmarExclusao(${im.id})">
-          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 01-2 2H8a2 2 0 01-2-2L5 6"/></svg>
-        </button>
-      </div>
-    </td>`;
-  return `<tr>${tds}</tr>`;
+    <td><div class="action-btns">
+      <button class="action-btn" title="Editar" onclick="abrirDrawer(${im.id})"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M11 4H4a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 013 3L12 15l-4 1 1-4 9.5-9.5z"/></svg></button>
+      <button class="action-btn" title="${im.status==='ativo'?'Desativar':'Ativar'}" onclick="toggleStatus(${im.id})"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg></button>
+      <button class="action-btn danger" title="Excluir" onclick="confirmarExclusao(${im.id})"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 01-2 2H8a2 2 0 01-2-2L5 6"/></svg></button>
+    </div></td>
+  </tr>`;
 }
 
-// ── DASHBOARD ──
 function renderDashboard() {
-  const imoveis = getImoveis();
-  const ativos = imoveis.filter(i => i.status === 'ativo');
-  const props = [...new Set(imoveis.filter(i=>i.prop_nome).map(i=>i.prop_nome))];
-  const valorTotal = ativos.reduce((s,i) => s + (i.preco||0), 0);
-
-  document.getElementById('stat-total').textContent = imoveis.length;
+  const ativos = todosImoveis.filter(i => i.status==='ativo');
+  const props  = [...new Set(todosImoveis.filter(i=>i.prop_nome).map(i=>i.prop_nome))];
+  const valor  = ativos.reduce((s,i)=>s+(Number(i.preco)||0),0);
+  document.getElementById('stat-total').textContent  = todosImoveis.length;
   document.getElementById('stat-ativos').textContent = ativos.length;
-  document.getElementById('stat-prop').textContent = props.length;
-
-  if (valorTotal >= 1000000) {
-    document.getElementById('stat-valor').textContent = 'R$ ' + (valorTotal/1000000).toFixed(1).replace('.',',') + ' mi';
-  } else if (valorTotal > 0) {
-    document.getElementById('stat-valor').textContent = 'R$ ' + (valorTotal/1000).toFixed(0) + ' mil';
-  } else {
-    document.getElementById('stat-valor').textContent = 'R$ 0';
-  }
-
+  document.getElementById('stat-prop').textContent   = props.length;
+  document.getElementById('stat-valor').textContent  = valor>=1000000 ? 'R$ '+(valor/1000000).toFixed(1).replace('.',',')+'mi' : valor>0 ? 'R$ '+(valor/1000).toFixed(0)+'k' : 'R$ 0';
   const tbody = document.getElementById('tabela-dashboard');
-  if (imoveis.length === 0) {
-    tbody.innerHTML = `<tr><td colspan="6" style="text-align:center;padding:60px;color:var(--gray);font-style:italic;font-family:var(--font-display);font-size:18px;">Nenhum imóvel cadastrado ainda</td></tr>`;
-    return;
-  }
-  tbody.innerHTML = imoveis.slice(0, 8).map(im => linhaTabela(im, 'dash')).join('');
+  if (todosImoveis.length === 0) { tbody.innerHTML=`<tr><td colspan="6" style="text-align:center;padding:60px;color:var(--gray);font-style:italic;font-family:var(--font-display);font-size:18px;">Nenhum imóvel cadastrado ainda</td></tr>`; return; }
+  tbody.innerHTML = todosImoveis.slice(0,8).map(im => linhaTabela(im, false)).join('');
 }
 
-// ── IMÓVEIS ──
-let buscaAtual = '';
-function renderImoveis() {
-  const imoveis = getImoveis().filter(im =>
-    !buscaAtual ||
-    im.titulo.toLowerCase().includes(buscaAtual) ||
-    im.bairro.toLowerCase().includes(buscaAtual) ||
-    (im.tipo||'').toLowerCase().includes(buscaAtual)
-  );
+function renderImoveis(lista) {
+  const filtrada = lista.filter(im => !buscaAtual || im.titulo.toLowerCase().includes(buscaAtual) || (im.bairro||'').toLowerCase().includes(buscaAtual) || (im.tipo||'').toLowerCase().includes(buscaAtual));
   const tbody = document.getElementById('tabela-imoveis');
   const empty = document.getElementById('empty-imoveis');
-  if (imoveis.length === 0) {
-    tbody.innerHTML = '';
-    empty.style.display = 'block';
-  } else {
-    empty.style.display = 'none';
-    tbody.innerHTML = imoveis.map(im => linhaTabela(im, 'full')).join('');
-  }
+  if (filtrada.length === 0) { tbody.innerHTML=''; empty.style.display='block'; return; }
+  empty.style.display = 'none';
+  tbody.innerHTML = filtrada.map(im => linhaTabela(im, true)).join('');
 }
-function buscarImoveis(v) {
-  buscaAtual = v.toLowerCase().trim();
-  renderImoveis();
-}
+function buscarImoveis(v) { buscaAtual=v.toLowerCase().trim(); renderImoveis(todosImoveis); }
 
-// ── PROPRIETÁRIOS ──
 function renderProprietarios() {
-  const imoveis = getImoveis();
   const mapa = {};
-  imoveis.forEach(im => {
+  todosImoveis.forEach(im => {
     if (!im.prop_nome) return;
-    if (!mapa[im.prop_nome]) mapa[im.prop_nome] = { ...im, count: 0, imoveis: [] };
+    if (!mapa[im.prop_nome]) mapa[im.prop_nome] = { ...im, count:0 };
     mapa[im.prop_nome].count++;
-    mapa[im.prop_nome].imoveis.push(im.titulo);
   });
   const props = Object.values(mapa);
   const tbody = document.getElementById('tabela-prop');
   const empty = document.getElementById('empty-prop');
-  if (props.length === 0) {
-    tbody.innerHTML = '';
-    empty.style.display = 'block';
-    return;
-  }
-  empty.style.display = 'none';
-  tbody.innerHTML = props.map(p => `<tr>
+  if (props.length===0) { tbody.innerHTML=''; empty.style.display='block'; return; }
+  empty.style.display='none';
+  tbody.innerHTML = props.map(p=>`<tr>
     <td><div class="td-nome">${p.prop_nome}</div></td>
-    <td>
-      <div style="font-size:11px;color:var(--gray-light);">${p.prop_tel || '—'}</div>
-      <div style="font-size:10px;color:var(--gray);margin-top:2px;">${p.prop_email || ''}</div>
-    </td>
+    <td><div style="font-size:11px;">${p.prop_tel||'—'}</div><div style="font-size:10px;color:var(--gray);">${p.prop_email||''}</div></td>
     <td><span class="nav-badge" style="margin:0;">${p.count}</span></td>
-    <td style="font-size:11px;color:var(--gray-light);max-width:200px;">${p.prop_end || '—'}</td>
-    <td>
-      <div class="action-btns">
-        <button class="action-btn" title="Ver imóveis" onclick="goTo('imoveis');buscarImoveis('${p.prop_nome.split(' ')[0]}')">
-          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
-        </button>
-      </div>
-    </td>
+    <td style="font-size:11px;color:var(--gray-light);max-width:200px;">${p.prop_end||'—'}</td>
   </tr>`).join('');
 }
 
-// ── BADGES ──
 function atualizarBadges() {
-  const imoveis = getImoveis();
-  document.getElementById('badge-imoveis').textContent = imoveis.length;
-  const props = new Set(imoveis.filter(i=>i.prop_nome).map(i=>i.prop_nome));
+  document.getElementById('badge-imoveis').textContent = todosImoveis.length;
+  const props = new Set(todosImoveis.filter(i=>i.prop_nome).map(i=>i.prop_nome));
   document.getElementById('badge-prop').textContent = props.size;
 }
 
 // ── CONFIGURAÇÕES ──
 function carregarConfig() {
-  const cfg = getConfig();
-  document.getElementById('cfg-wpp').value = cfg.wpp || '';
-  document.getElementById('cfg-wpp-exib').value = cfg.wppExib || '';
-  document.getElementById('cfg-email').value = cfg.email || '';
-  document.getElementById('cfg-ig').value = cfg.ig || '';
-  document.getElementById('cfg-nome').value = cfg.nome || '';
-  document.getElementById('cfg-imob').value = cfg.imob || '';
-  document.getElementById('cfg-creci').value = cfg.creci || '';
-  document.getElementById('cfg-cidade').value = cfg.cidade || '';
-  document.getElementById('cfg-login-user').value = cfg.usuario || '';
+  const cfg = getCfg();
+  document.getElementById('cfg-wpp').value      = cfg.wpp||'';
+  document.getElementById('cfg-wpp-exib').value = cfg.wppExib||'';
+  document.getElementById('cfg-email').value    = cfg.email||'';
+  document.getElementById('cfg-ig').value       = cfg.ig||'';
+  document.getElementById('cfg-user').value     = cfg.usuario||'';
 }
-
-function configChanged() {
-  document.getElementById('config-save-bar').classList.add('visible');
-}
-
+function configChanged() { document.getElementById('config-save-bar').classList.add('visible'); }
 function salvarConfig() {
-  const cfg = getConfig();
-  const novaSenha = document.getElementById('cfg-login-pass-new').value;
-  const confSenha = document.getElementById('cfg-login-pass-conf').value;
-  const senhaAtual = document.getElementById('cfg-login-pass-atual').value;
-
+  const cfg = getCfg();
+  const novaSenha = document.getElementById('cfg-pass-new').value;
+  const confSenha = document.getElementById('cfg-pass-conf').value;
+  const senhaAtual = document.getElementById('cfg-pass-atual').value;
   if (novaSenha) {
-    if (senhaAtual !== cfg.senha) {
-      showToast('Senha atual incorreta', 'Verifique e tente novamente', 'error');
-      return;
-    }
-    if (novaSenha !== confSenha) {
-      showToast('As senhas não coincidem', '', 'error');
-      return;
-    }
+    if (senhaAtual !== cfg.senha) { showToast('Senha atual incorreta','','error'); return; }
+    if (novaSenha !== confSenha)  { showToast('As senhas não coincidem','','error'); return; }
     cfg.senha = novaSenha;
   }
-
   cfg.wpp     = document.getElementById('cfg-wpp').value;
   cfg.wppExib = document.getElementById('cfg-wpp-exib').value;
   cfg.email   = document.getElementById('cfg-email').value;
   cfg.ig      = document.getElementById('cfg-ig').value;
-  cfg.nome    = document.getElementById('cfg-nome').value;
-  cfg.imob    = document.getElementById('cfg-imob').value;
-  cfg.creci   = document.getElementById('cfg-creci').value;
-  cfg.cidade  = document.getElementById('cfg-cidade').value;
-  cfg.usuario = document.getElementById('cfg-login-user').value;
-
-  setConfig(cfg);
+  cfg.usuario = document.getElementById('cfg-user').value;
+  setCfg(cfg);
   document.getElementById('config-save-bar').classList.remove('visible');
-  document.getElementById('cfg-login-pass-atual').value = '';
-  document.getElementById('cfg-login-pass-new').value = '';
-  document.getElementById('cfg-login-pass-conf').value = '';
-  showToast('Configurações salvas!', 'Alterações aplicadas com sucesso');
+  document.getElementById('cfg-pass-atual').value='';
+  document.getElementById('cfg-pass-new').value='';
+  document.getElementById('cfg-pass-conf').value='';
+  showToast('Configurações salvas!');
 }
-
-function cancelarConfig() {
-  carregarConfig();
-  document.getElementById('config-save-bar').classList.remove('visible');
-}
+function cancelarConfig() { carregarConfig(); document.getElementById('config-save-bar').classList.remove('visible'); }
 
 // ── INIT ──
-function init() {
-  renderDashboard();
-  atualizarBadges();
-}
-
-// Enter no login
-document.getElementById('login-user').addEventListener('keydown', e => {
-  if (e.key === 'Enter') document.getElementById('login-pass').focus();
-});
+async function init() { await carregarTodos(); }
 </script>
 </body>
 </html>

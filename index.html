@@ -3,853 +3,177 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Alessandra Paixão — BG Imóveis</title>
+<title>Alessandra Paixão — Corretora de Imóveis</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Montserrat:wght@300;400;500;600&display=swap" rel="stylesheet">
 <style>
   :root {
-    --gold: #C9A84C;
-    --gold-light: #E8C97A;
-    --gold-pale: #F5E6C0;
-    --dark: #0A0A0A;
-    --dark-2: #111111;
-    --dark-3: #1A1A1A;
-    --dark-4: #222222;
-    --gray: #888888;
-    --gray-light: #AAAAAA;
-    --white: #FAF8F3;
-    --font-display: 'Cormorant Garamond', serif;
-    --font-body: 'Montserrat', sans-serif;
-  }
-
-  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-
-  html { scroll-behavior: smooth; }
-
-  body {
-    background: var(--dark);
-    color: var(--white);
-    font-family: var(--font-body);
-    font-weight: 300;
-    overflow-x: hidden;
-    cursor: default;
-  }
-
-  /* ── GRAIN OVERLAY ── */
-  body::before {
-    content: '';
-    position: fixed;
-    inset: 0;
-    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='1'/%3E%3C/svg%3E");
-    opacity: 0.035;
-    pointer-events: none;
-    z-index: 9999;
-  }
-
-  /* ── NAV ── */
-  nav {
-    position: fixed;
-    top: 0; left: 0; right: 0;
-    z-index: 100;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 24px 60px;
-    background: linear-gradient(to bottom, rgba(10,10,10,0.98) 0%, rgba(10,10,10,0) 100%);
-    transition: background 0.4s;
-  }
-  nav.scrolled { background: rgba(10,10,10,0.97); border-bottom: 1px solid rgba(201,168,76,0.15); }
-
-  .nav-brand {
-    display: flex;
-    flex-direction: column;
-    line-height: 1;
-  }
-  .nav-brand .name {
-    font-family: var(--font-display);
-    font-size: 22px;
-    font-weight: 400;
-    font-style: italic;
-    color: var(--gold-light);
-    letter-spacing: 0.5px;
-  }
-  .nav-brand .sub {
-    font-size: 9px;
-    font-weight: 500;
-    letter-spacing: 4px;
-    color: var(--gray);
-    text-transform: uppercase;
-    margin-top: 4px;
-  }
-
-  .nav-links {
-    display: flex;
-    gap: 36px;
-    list-style: none;
-  }
-  .nav-links a {
-    font-size: 11px;
-    font-weight: 500;
-    letter-spacing: 2.5px;
-    text-transform: uppercase;
-    color: var(--gray-light);
-    text-decoration: none;
-    transition: color 0.3s;
-    position: relative;
-  }
-  .nav-links a::after {
-    content: '';
-    position: absolute;
-    bottom: -4px; left: 0; right: 100%;
-    height: 1px;
-    background: var(--gold);
-    transition: right 0.3s;
-  }
-  .nav-links a:hover { color: var(--gold-light); }
-  .nav-links a:hover::after { right: 0; }
-
-  .nav-cta {
-    font-size: 10px;
-    font-weight: 500;
-    letter-spacing: 2px;
-    text-transform: uppercase;
-    color: var(--gold);
-    border: 1px solid rgba(201,168,76,0.4);
-    padding: 10px 22px;
-    text-decoration: none;
-    transition: all 0.3s;
-  }
-  .nav-cta:hover {
-    background: var(--gold);
-    color: var(--dark);
-  }
-
-  /* ── HERO ── */
-  .hero {
-    height: 100vh;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    position: relative;
-    overflow: hidden;
-  }
-
-  .hero-bg {
-    position: absolute;
-    inset: 0;
-    background:
-      radial-gradient(ellipse 60% 80% at 70% 50%, rgba(201,168,76,0.07) 0%, transparent 70%),
-      radial-gradient(ellipse 40% 60% at 20% 30%, rgba(201,168,76,0.04) 0%, transparent 60%),
-      var(--dark);
-  }
-
-  .hero-lines {
-    position: absolute;
-    inset: 0;
-    overflow: hidden;
-    opacity: 0.12;
-  }
-  .hero-lines::before {
-    content: '';
-    position: absolute;
-    top: 0; bottom: 0;
-    left: 58%;
-    width: 1px;
-    background: linear-gradient(to bottom, transparent, var(--gold) 30%, var(--gold) 70%, transparent);
-  }
-  .hero-lines::after {
-    content: '';
-    position: absolute;
-    left: 0; right: 0;
-    top: 62%;
-    height: 1px;
-    background: linear-gradient(to right, transparent, var(--gold) 30%, var(--gold) 70%, transparent);
-  }
-
-  .hero-content {
-    position: relative;
-    z-index: 2;
-    text-align: center;
-    animation: heroIn 1.4s cubic-bezier(0.16, 1, 0.3, 1) both;
-  }
-  @keyframes heroIn {
-    from { opacity: 0; transform: translateY(30px); }
-    to   { opacity: 1; transform: translateY(0); }
-  }
-
-  .hero-eyebrow {
-    font-size: 10px;
-    font-weight: 500;
-    letter-spacing: 5px;
-    text-transform: uppercase;
-    color: var(--gold);
-    margin-bottom: 28px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 16px;
-  }
-  .hero-eyebrow::before, .hero-eyebrow::after {
-    content: '';
-    width: 40px;
-    height: 1px;
-    background: var(--gold);
-    opacity: 0.5;
-  }
-
-  .hero-title {
-    font-family: var(--font-display);
-    font-size: clamp(52px, 8vw, 96px);
-    font-weight: 300;
-    line-height: 1.0;
-    color: var(--white);
-    margin-bottom: 12px;
-  }
-  .hero-title em {
-    font-style: italic;
-    color: var(--gold-light);
-  }
-
-  .hero-subtitle {
-    font-family: var(--font-display);
-    font-size: clamp(18px, 2.5vw, 28px);
-    font-weight: 300;
-    font-style: italic;
-    color: var(--gray-light);
-    margin-bottom: 56px;
-    letter-spacing: 0.5px;
-  }
-
-  .hero-actions {
-    display: flex;
-    gap: 20px;
-    justify-content: center;
-    flex-wrap: wrap;
-  }
-
-  .btn-primary {
-    display: inline-block;
-    font-size: 10px;
-    font-weight: 600;
-    letter-spacing: 3px;
-    text-transform: uppercase;
-    color: var(--dark);
-    background: linear-gradient(135deg, var(--gold-light), var(--gold));
-    padding: 16px 40px;
-    text-decoration: none;
-    transition: all 0.3s;
-    position: relative;
-    overflow: hidden;
-  }
-  .btn-primary::before {
-    content: '';
-    position: absolute;
-    inset: 0;
-    background: linear-gradient(135deg, var(--gold-pale), var(--gold-light));
-    opacity: 0;
-    transition: opacity 0.3s;
-  }
-  .btn-primary:hover::before { opacity: 1; }
-  .btn-primary span { position: relative; z-index: 1; }
-
-  .btn-secondary {
-    display: inline-block;
-    font-size: 10px;
-    font-weight: 500;
-    letter-spacing: 3px;
-    text-transform: uppercase;
-    color: var(--gold-light);
-    border: 1px solid rgba(201,168,76,0.35);
-    padding: 16px 40px;
-    text-decoration: none;
-    transition: all 0.3s;
-  }
-  .btn-secondary:hover {
-    background: rgba(201,168,76,0.08);
-    border-color: var(--gold);
-  }
-
-  .hero-scroll {
-    position: absolute;
-    bottom: 40px;
-    left: 50%;
-    transform: translateX(-50%);
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 8px;
-    animation: bounce 2s infinite;
-  }
-  @keyframes bounce {
-    0%, 100% { transform: translateX(-50%) translateY(0); }
-    50% { transform: translateX(-50%) translateY(6px); }
-  }
-  .hero-scroll span {
-    font-size: 9px;
-    letter-spacing: 3px;
-    text-transform: uppercase;
-    color: var(--gray);
-  }
-  .hero-scroll-line {
-    width: 1px;
-    height: 40px;
-    background: linear-gradient(to bottom, var(--gold), transparent);
-  }
-
-  /* ── NUMBERS STRIP ── */
-  .numbers-strip {
-    border-top: 1px solid rgba(201,168,76,0.12);
-    border-bottom: 1px solid rgba(201,168,76,0.12);
-    background: var(--dark-2);
-    padding: 40px 60px;
-    display: flex;
-    justify-content: center;
-    gap: 80px;
-    flex-wrap: wrap;
-  }
-  .number-item {
-    text-align: center;
-  }
-  .number-item .num {
-    font-family: var(--font-display);
-    font-size: 42px;
-    font-weight: 300;
-    color: var(--gold-light);
-    line-height: 1;
-  }
-  .number-item .label {
-    font-size: 9px;
-    letter-spacing: 3px;
-    text-transform: uppercase;
-    color: var(--gray);
-    margin-top: 6px;
-  }
-
-  /* ── SECTION ── */
-  section {
-    padding: 100px 60px;
-    max-width: 1400px;
-    margin: 0 auto;
-  }
-
-  .section-header {
-    margin-bottom: 60px;
-  }
-  .section-eyebrow {
-    font-size: 9px;
-    font-weight: 500;
-    letter-spacing: 4px;
-    text-transform: uppercase;
-    color: var(--gold);
-    margin-bottom: 16px;
-  }
-  .section-title {
-    font-family: var(--font-display);
-    font-size: clamp(36px, 4vw, 54px);
-    font-weight: 300;
-    line-height: 1.1;
-    color: var(--white);
-  }
-  .section-title em { font-style: italic; color: var(--gold-light); }
-
-  /* ── FILTROS ── */
-  .filters {
-    background: var(--dark-2);
-    border-top: 1px solid rgba(201,168,76,0.1);
-    border-bottom: 1px solid rgba(201,168,76,0.1);
-    padding: 0;
-    margin: 0;
-    max-width: 100%;
-  }
-  .filters-inner {
-    max-width: 1400px;
-    margin: 0 auto;
-    padding: 32px 60px;
-    display: flex;
-    gap: 16px;
-    align-items: center;
-    flex-wrap: wrap;
-  }
-  .filter-label {
-    font-size: 9px;
-    letter-spacing: 3px;
-    text-transform: uppercase;
-    color: var(--gray);
-    margin-right: 8px;
-    white-space: nowrap;
-  }
-  .filter-select {
-    appearance: none;
-    background: var(--dark-3);
-    border: 1px solid rgba(201,168,76,0.2);
-    color: var(--gray-light);
-    font-family: var(--font-body);
-    font-size: 11px;
-    letter-spacing: 1px;
-    padding: 10px 36px 10px 16px;
-    cursor: pointer;
-    outline: none;
-    transition: border-color 0.3s;
-    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6' viewBox='0 0 10 6'%3E%3Cpath d='M1 1l4 4 4-4' stroke='%23C9A84C' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");
-    background-repeat: no-repeat;
-    background-position: right 12px center;
-    min-width: 160px;
-  }
-  .filter-select:hover, .filter-select:focus { border-color: var(--gold); }
-  .filter-select option { background: var(--dark-3); }
-
-  .filter-input {
-    appearance: none;
-    background: var(--dark-3);
-    border: 1px solid rgba(201,168,76,0.2);
-    color: var(--gray-light);
-    font-family: var(--font-body);
-    font-size: 11px;
-    letter-spacing: 1px;
-    padding: 10px 16px;
-    outline: none;
-    transition: border-color 0.3s;
-    width: 140px;
-  }
-  .filter-input::placeholder { color: var(--gray); }
-  .filter-input:focus { border-color: var(--gold); }
-
-  .filter-btn {
-    background: var(--gold);
-    border: none;
-    color: var(--dark);
-    font-family: var(--font-body);
-    font-size: 9px;
-    font-weight: 600;
-    letter-spacing: 2.5px;
-    text-transform: uppercase;
-    padding: 11px 28px;
-    cursor: pointer;
-    transition: background 0.3s;
-  }
-  .filter-btn:hover { background: var(--gold-light); }
-
-  .filter-count {
-    margin-left: auto;
-    font-size: 11px;
-    color: var(--gray);
-    white-space: nowrap;
-  }
-  .filter-count strong { color: var(--gold-light); font-weight: 400; }
-
-  /* ── GRID DE IMÓVEIS ── */
-  .imoveis-section {
-    padding: 60px 60px 100px;
-    max-width: 1400px;
-    margin: 0 auto;
-  }
-
-  .imoveis-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
-    gap: 2px;
-  }
-
-  .card {
-    position: relative;
-    overflow: hidden;
-    background: var(--dark-3);
-    cursor: pointer;
-    group: true;
-  }
-  .card:hover .card-img img { transform: scale(1.06); }
-  .card:hover .card-overlay { opacity: 1; }
-
-  .card-img {
-    aspect-ratio: 4/3;
-    overflow: hidden;
-    position: relative;
-  }
-  .card-img img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    transition: transform 0.7s cubic-bezier(0.16, 1, 0.3, 1);
-    display: block;
-  }
-  .card-img-placeholder {
-    width: 100%;
-    height: 100%;
-    background: linear-gradient(135deg, var(--dark-3), var(--dark-4));
-    display: flex;
-    align-items: center;
-    justify-content: center;
-  }
-  .card-img-placeholder svg { opacity: 0.15; }
-
-  .card-badge {
-    position: absolute;
-    top: 16px; left: 16px;
-    font-size: 8px;
-    font-weight: 600;
-    letter-spacing: 2.5px;
-    text-transform: uppercase;
-    background: var(--gold);
-    color: var(--dark);
-    padding: 5px 12px;
-    z-index: 2;
-  }
-
-  .card-overlay {
-    position: absolute;
-    inset: 0;
-    background: linear-gradient(to top, rgba(0,0,0,0.7) 0%, transparent 60%);
-    opacity: 0;
-    transition: opacity 0.4s;
-    z-index: 1;
-    display: flex;
-    align-items: flex-end;
-    padding: 24px;
-  }
-  .card-overlay-btn {
-    font-size: 9px;
-    font-weight: 600;
-    letter-spacing: 2px;
-    text-transform: uppercase;
-    color: var(--dark);
-    background: var(--gold);
-    border: none;
-    padding: 10px 20px;
-    cursor: pointer;
-    transition: background 0.2s;
-  }
-  .card-overlay-btn:hover { background: var(--gold-light); }
-
-  .card-body {
-    padding: 24px;
-    border-bottom: 1px solid rgba(201,168,76,0.08);
-  }
-
-  .card-tipo {
-    font-size: 8px;
-    font-weight: 600;
-    letter-spacing: 2.5px;
-    text-transform: uppercase;
-    color: var(--gold);
-    margin-bottom: 8px;
-  }
-
-  .card-title {
-    font-family: var(--font-display);
-    font-size: 20px;
-    font-weight: 400;
-    color: var(--white);
-    margin-bottom: 4px;
-    line-height: 1.2;
-  }
-
-  .card-local {
-    font-size: 11px;
-    color: var(--gray);
-    letter-spacing: 0.5px;
-  }
-
-  .card-footer {
-    padding: 16px 24px;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-  }
-
-  .card-preco {
-    font-family: var(--font-display);
-    font-size: 26px;
-    font-weight: 300;
-    color: var(--gold-light);
-    line-height: 1;
-  }
-  .card-preco span {
-    font-size: 12px;
-    font-family: var(--font-body);
-    color: var(--gray);
-    font-weight: 300;
-    margin-right: 4px;
-  }
-
-  .card-details {
-    display: flex;
-    gap: 12px;
-  }
-  .card-detail {
-    display: flex;
-    align-items: center;
-    gap: 5px;
-    font-size: 10px;
-    color: var(--gray);
-    letter-spacing: 0.5px;
-  }
-  .card-detail svg { opacity: 0.5; }
-
-  /* DESTAQUE (card grande) */
-  .card.destaque {
-    grid-column: span 2;
-  }
-  .card.destaque .card-img {
-    aspect-ratio: 16/7;
-  }
-  .card.destaque .card-body { padding: 32px; }
-  .card.destaque .card-title { font-size: 28px; }
-  .card.destaque .card-footer { padding: 20px 32px; }
-  .card.destaque .card-preco { font-size: 34px; }
-
-  /* ── MODAL ── */
-  .modal-overlay {
-    position: fixed;
-    inset: 0;
-    background: rgba(0,0,0,0.92);
-    z-index: 200;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    padding: 40px;
-    opacity: 0;
-    pointer-events: none;
-    transition: opacity 0.3s;
-  }
-  .modal-overlay.open {
-    opacity: 1;
-    pointer-events: all;
-  }
-  .modal {
-    background: var(--dark-2);
-    border: 1px solid rgba(201,168,76,0.15);
-    width: 100%;
-    max-width: 900px;
-    max-height: 90vh;
-    overflow-y: auto;
-    transform: translateY(20px);
-    transition: transform 0.3s;
-  }
-  .modal-overlay.open .modal { transform: translateY(0); }
-
-  .modal-img {
-    width: 100%;
-    aspect-ratio: 16/8;
-    object-fit: cover;
-  }
-  .modal-img-placeholder {
-    width: 100%;
-    aspect-ratio: 16/8;
-    background: var(--dark-3);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-  }
-  .modal-content { padding: 48px; }
-  .modal-tipo {
-    font-size: 9px;
-    font-weight: 600;
-    letter-spacing: 3px;
-    text-transform: uppercase;
-    color: var(--gold);
-    margin-bottom: 12px;
-  }
-  .modal-title {
-    font-family: var(--font-display);
-    font-size: 38px;
-    font-weight: 300;
-    color: var(--white);
-    margin-bottom: 8px;
-  }
-  .modal-local {
-    font-size: 13px;
-    color: var(--gray);
-    margin-bottom: 32px;
-  }
-  .modal-preco {
-    font-family: var(--font-display);
-    font-size: 48px;
-    font-weight: 300;
-    color: var(--gold-light);
-    margin-bottom: 32px;
-    line-height: 1;
-  }
-  .modal-preco span {
-    font-size: 18px;
-    font-family: var(--font-body);
-    color: var(--gray);
-    font-weight: 300;
-  }
-  .modal-divider {
-    height: 1px;
-    background: rgba(201,168,76,0.12);
-    margin: 32px 0;
-  }
-  .modal-specs {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
-    gap: 24px;
-    margin-bottom: 32px;
-  }
-  .modal-spec-label {
-    font-size: 8px;
-    letter-spacing: 2.5px;
-    text-transform: uppercase;
-    color: var(--gold);
-    margin-bottom: 6px;
-  }
-  .modal-spec-value {
-    font-family: var(--font-display);
-    font-size: 22px;
-    font-weight: 300;
-    color: var(--white);
-  }
-  .modal-desc {
-    font-size: 13px;
-    line-height: 1.8;
-    color: var(--gray-light);
-    margin-bottom: 40px;
-  }
-  .modal-actions {
-    display: flex;
-    gap: 16px;
-    flex-wrap: wrap;
-  }
-  .modal-close {
-    position: absolute;
-    top: 20px; right: 20px;
-    background: none;
-    border: 1px solid rgba(201,168,76,0.2);
-    color: var(--gray);
-    width: 40px;
-    height: 40px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    cursor: pointer;
-    font-size: 18px;
-    transition: all 0.2s;
-  }
-  .modal-close:hover { border-color: var(--gold); color: var(--gold); }
-  .modal { position: relative; }
-
-  /* ── CONTACT STRIP ── */
-  .contact-strip {
-    background: var(--dark-2);
-    border-top: 1px solid rgba(201,168,76,0.12);
-    border-bottom: 1px solid rgba(201,168,76,0.12);
-    padding: 0;
-  }
-  .contact-inner {
-    max-width: 1400px;
-    margin: 0 auto;
-    padding: 64px 60px;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: 40px;
-    flex-wrap: wrap;
-  }
-  .contact-text .eyebrow {
-    font-size: 9px;
-    font-weight: 500;
-    letter-spacing: 4px;
-    text-transform: uppercase;
-    color: var(--gold);
-    margin-bottom: 12px;
-  }
-  .contact-text h2 {
-    font-family: var(--font-display);
-    font-size: 40px;
-    font-weight: 300;
-    color: var(--white);
-    line-height: 1.1;
-  }
-  .contact-text h2 em { font-style: italic; color: var(--gold-light); }
-  .contact-links {
-    display: flex;
-    flex-direction: column;
-    gap: 12px;
-  }
-  .contact-link {
-    display: flex;
-    align-items: center;
-    gap: 14px;
-    color: var(--gray-light);
-    text-decoration: none;
-    font-size: 13px;
-    letter-spacing: 0.5px;
-    transition: color 0.2s;
-  }
-  .contact-link:hover { color: var(--gold-light); }
-  .contact-icon {
-    width: 36px; height: 36px;
-    border: 1px solid rgba(201,168,76,0.2);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    flex-shrink: 0;
-    transition: border-color 0.2s;
-  }
-  .contact-link:hover .contact-icon { border-color: var(--gold); }
-
-  /* ── FOOTER ── */
-  footer {
-    background: var(--dark);
-    border-top: 1px solid rgba(201,168,76,0.08);
-    padding: 40px 60px;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    flex-wrap: wrap;
-    gap: 20px;
-  }
-  .footer-brand {
-    font-family: var(--font-display);
-    font-size: 18px;
-    font-style: italic;
-    color: var(--gold);
-  }
-  .footer-info {
-    font-size: 10px;
-    letter-spacing: 1px;
-    color: var(--gray);
-    text-align: center;
-  }
-  .footer-creci {
-    font-size: 10px;
-    letter-spacing: 2px;
-    text-transform: uppercase;
-    color: var(--gray);
-  }
-
-  /* ── ANIMAÇÕES DE ENTRADA ── */
-  .fade-up {
-    opacity: 0;
-    transform: translateY(24px);
-    transition: opacity 0.7s ease, transform 0.7s ease;
-  }
-  .fade-up.visible {
-    opacity: 1;
-    transform: translateY(0);
-  }
-
-  /* ── RESPONSIVE ── */
-  @media (max-width: 768px) {
-    nav { padding: 20px 24px; }
-    .nav-links, .nav-cta { display: none; }
-    section, .imoveis-section { padding: 60px 24px; }
-    .filters-inner { padding: 24px; }
-    .numbers-strip { padding: 32px 24px; gap: 40px; }
-    .contact-inner { padding: 48px 24px; }
-    footer { padding: 32px 24px; }
-    .card.destaque { grid-column: span 1; }
-    .card.destaque .card-img { aspect-ratio: 4/3; }
-    .modal { margin: 0; }
-    .modal-content { padding: 32px 24px; }
-    .modal-title { font-size: 28px; }
-    .modal-preco { font-size: 36px; }
+    --gold:#C9A84C;--gold-light:#E8C97A;--gold-pale:#F5E6C0;
+    --dark:#0A0A0A;--dark-2:#111111;--dark-3:#1A1A1A;--dark-4:#222222;
+    --gray:#888888;--gray-light:#AAAAAA;--white:#FAF8F3;
+    --font-display:'Cormorant Garamond',serif;--font-body:'Montserrat',sans-serif;
+  }
+  *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+  html{scroll-behavior:smooth}
+  body{background:var(--dark);color:var(--white);font-family:var(--font-body);font-weight:300;overflow-x:hidden}
+  body::before{content:'';position:fixed;inset:0;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='1'/%3E%3C/svg%3E");opacity:.035;pointer-events:none;z-index:9999}
+  nav{position:fixed;top:0;left:0;right:0;z-index:100;display:flex;align-items:center;justify-content:space-between;padding:24px 60px;background:linear-gradient(to bottom,rgba(10,10,10,.98) 0%,rgba(10,10,10,0) 100%);transition:background .4s}
+  nav.scrolled{background:rgba(10,10,10,.97);border-bottom:1px solid rgba(201,168,76,.15)}
+  .nav-brand .name{font-family:var(--font-display);font-size:22px;font-weight:400;font-style:italic;color:var(--gold-light)}
+  .nav-brand .sub{font-size:9px;font-weight:500;letter-spacing:4px;color:var(--gray);text-transform:uppercase;margin-top:4px;display:block}
+  .nav-links{display:flex;gap:36px;list-style:none}
+  .nav-links a{font-size:11px;font-weight:500;letter-spacing:2.5px;text-transform:uppercase;color:var(--gray-light);text-decoration:none;transition:color .3s;position:relative}
+  .nav-links a::after{content:'';position:absolute;bottom:-4px;left:0;right:100%;height:1px;background:var(--gold);transition:right .3s}
+  .nav-links a:hover{color:var(--gold-light)}.nav-links a:hover::after{right:0}
+  .nav-cta{font-size:10px;font-weight:500;letter-spacing:2px;text-transform:uppercase;color:var(--gold);border:1px solid rgba(201,168,76,.4);padding:10px 22px;text-decoration:none;transition:all .3s}
+  .nav-cta:hover{background:var(--gold);color:var(--dark)}
+  .hero{height:100vh;display:flex;align-items:center;justify-content:center;position:relative;overflow:hidden}
+  .hero-bg{position:absolute;inset:0;background:radial-gradient(ellipse 60% 80% at 70% 50%,rgba(201,168,76,.07) 0%,transparent 70%),radial-gradient(ellipse 40% 60% at 20% 30%,rgba(201,168,76,.04) 0%,transparent 60%),var(--dark)}
+  .hero-lines{position:absolute;inset:0;overflow:hidden;opacity:.12}
+  .hero-lines::before{content:'';position:absolute;top:0;bottom:0;left:58%;width:1px;background:linear-gradient(to bottom,transparent,var(--gold) 30%,var(--gold) 70%,transparent)}
+  .hero-lines::after{content:'';position:absolute;left:0;right:0;top:62%;height:1px;background:linear-gradient(to right,transparent,var(--gold) 30%,var(--gold) 70%,transparent)}
+  .hero-content{position:relative;z-index:2;text-align:center;animation:heroIn 1.4s cubic-bezier(.16,1,.3,1) both}
+  @keyframes heroIn{from{opacity:0;transform:translateY(30px)}to{opacity:1;transform:translateY(0)}}
+  .hero-eyebrow{font-size:10px;font-weight:500;letter-spacing:5px;text-transform:uppercase;color:var(--gold);margin-bottom:28px;display:flex;align-items:center;justify-content:center;gap:16px}
+  .hero-eyebrow::before,.hero-eyebrow::after{content:'';width:40px;height:1px;background:var(--gold);opacity:.5}
+  .hero-title{font-family:var(--font-display);font-size:clamp(52px,8vw,96px);font-weight:300;line-height:1;color:var(--white);margin-bottom:12px}
+  .hero-title em{font-style:italic;color:var(--gold-light)}
+  .hero-subtitle{font-family:var(--font-display);font-size:clamp(18px,2.5vw,28px);font-weight:300;font-style:italic;color:var(--gray-light);margin-bottom:56px}
+  .hero-actions{display:flex;gap:20px;justify-content:center;flex-wrap:wrap}
+  .btn-primary{display:inline-block;font-size:10px;font-weight:600;letter-spacing:3px;text-transform:uppercase;color:var(--dark);background:linear-gradient(135deg,var(--gold-light),var(--gold));padding:16px 40px;text-decoration:none;transition:all .3s;position:relative;overflow:hidden}
+  .btn-primary::before{content:'';position:absolute;inset:0;background:linear-gradient(135deg,var(--gold-pale),var(--gold-light));opacity:0;transition:opacity .3s}
+  .btn-primary:hover::before{opacity:1}.btn-primary span{position:relative;z-index:1}
+  .btn-secondary{display:inline-block;font-size:10px;font-weight:500;letter-spacing:3px;text-transform:uppercase;color:var(--gold-light);border:1px solid rgba(201,168,76,.35);padding:16px 40px;text-decoration:none;transition:all .3s}
+  .btn-secondary:hover{background:rgba(201,168,76,.08);border-color:var(--gold)}
+  .hero-scroll{position:absolute;bottom:40px;left:50%;transform:translateX(-50%);display:flex;flex-direction:column;align-items:center;gap:8px;animation:bounce 2s infinite}
+  @keyframes bounce{0%,100%{transform:translateX(-50%) translateY(0)}50%{transform:translateX(-50%) translateY(6px)}}
+  .hero-scroll span{font-size:9px;letter-spacing:3px;text-transform:uppercase;color:var(--gray)}
+  .hero-scroll-line{width:1px;height:40px;background:linear-gradient(to bottom,var(--gold),transparent)}
+  .numbers-strip{border-top:1px solid rgba(201,168,76,.12);border-bottom:1px solid rgba(201,168,76,.12);background:var(--dark-2);padding:40px 60px;display:flex;justify-content:center;gap:80px;flex-wrap:wrap}
+  .number-item{text-align:center}
+  .number-item .num{font-family:var(--font-display);font-size:42px;font-weight:300;color:var(--gold-light);line-height:1}
+  .number-item .label{font-size:9px;letter-spacing:3px;text-transform:uppercase;color:var(--gray);margin-top:6px}
+  .loading-bar{width:100%;padding:80px 0;display:flex;flex-direction:column;align-items:center;gap:20px}
+  .loading-spinner{width:36px;height:36px;border:2px solid rgba(201,168,76,.15);border-top-color:var(--gold);border-radius:50%;animation:spin .8s linear infinite}
+  @keyframes spin{to{transform:rotate(360deg)}}
+  .loading-text{font-size:11px;letter-spacing:3px;text-transform:uppercase;color:var(--gray)}
+  .filters{background:var(--dark-2);border-top:1px solid rgba(201,168,76,.1);border-bottom:1px solid rgba(201,168,76,.1);padding:0;margin:0;max-width:100%}
+  .filters-inner{max-width:1400px;margin:0 auto;padding:32px 60px;display:flex;gap:16px;align-items:center;flex-wrap:wrap}
+  .filter-label{font-size:9px;letter-spacing:3px;text-transform:uppercase;color:var(--gray);margin-right:8px;white-space:nowrap}
+  .filter-select{appearance:none;background:var(--dark-3);border:1px solid rgba(201,168,76,.2);color:var(--gray-light);font-family:var(--font-body);font-size:11px;letter-spacing:1px;padding:10px 36px 10px 16px;cursor:pointer;outline:none;transition:border-color .3s;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6' viewBox='0 0 10 6'%3E%3Cpath d='M1 1l4 4 4-4' stroke='%23C9A84C' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 12px center;min-width:160px}
+  .filter-select:hover,.filter-select:focus{border-color:var(--gold)}
+  .filter-select option{background:var(--dark-3)}
+  .filter-input{appearance:none;background:var(--dark-3);border:1px solid rgba(201,168,76,.2);color:var(--gray-light);font-family:var(--font-body);font-size:11px;padding:10px 16px;outline:none;transition:border-color .3s;width:140px}
+  .filter-input::placeholder{color:var(--gray)}.filter-input:focus{border-color:var(--gold)}
+  .filter-btn{background:var(--gold);border:none;color:var(--dark);font-family:var(--font-body);font-size:9px;font-weight:600;letter-spacing:2.5px;text-transform:uppercase;padding:11px 28px;cursor:pointer;transition:background .3s}
+  .filter-btn:hover{background:var(--gold-light)}
+  .filter-count{margin-left:auto;font-size:11px;color:var(--gray);white-space:nowrap}
+  .filter-count strong{color:var(--gold-light);font-weight:400}
+  .imoveis-section{padding:60px 60px 100px;max-width:1400px;margin:0 auto}
+  .imoveis-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(340px,1fr));gap:2px}
+  .card{position:relative;overflow:hidden;background:var(--dark-3);cursor:pointer}
+  .card:hover .card-img img{transform:scale(1.06)}
+  .card:hover .card-overlay{opacity:1}
+  .card-img{aspect-ratio:4/3;overflow:hidden;position:relative}
+  .card-img img{width:100%;height:100%;object-fit:cover;transition:transform .7s cubic-bezier(.16,1,.3,1);display:block}
+  .card-img-placeholder{width:100%;height:100%;background:linear-gradient(135deg,var(--dark-3),var(--dark-4));display:flex;align-items:center;justify-content:center}
+  .card-badge{position:absolute;top:16px;left:16px;font-size:8px;font-weight:600;letter-spacing:2.5px;text-transform:uppercase;background:var(--gold);color:var(--dark);padding:5px 12px;z-index:2}
+  .card-overlay{position:absolute;inset:0;background:linear-gradient(to top,rgba(0,0,0,.7) 0%,transparent 60%);opacity:0;transition:opacity .4s;z-index:1;display:flex;align-items:flex-end;padding:24px}
+  .card-overlay-btn{font-size:9px;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:var(--dark);background:var(--gold);border:none;padding:10px 20px;cursor:pointer}
+  .card-body{padding:24px;border-bottom:1px solid rgba(201,168,76,.08)}
+  .card-tipo{font-size:8px;font-weight:600;letter-spacing:2.5px;text-transform:uppercase;color:var(--gold);margin-bottom:8px}
+  .card-title{font-family:var(--font-display);font-size:20px;font-weight:400;color:var(--white);margin-bottom:4px;line-height:1.2}
+  .card-local{font-size:11px;color:var(--gray);letter-spacing:.5px}
+  .card-footer{padding:16px 24px;display:flex;align-items:center;justify-content:space-between}
+  .card-preco{font-family:var(--font-display);font-size:26px;font-weight:300;color:var(--gold-light);line-height:1}
+  .card-preco span{font-size:12px;font-family:var(--font-body);color:var(--gray);font-weight:300;margin-right:4px}
+  .card-details{display:flex;gap:12px}
+  .card-detail{display:flex;align-items:center;gap:5px;font-size:10px;color:var(--gray)}
+  .card.destaque{grid-column:span 2}.card.destaque .card-img{aspect-ratio:16/7}
+  .card.destaque .card-body{padding:32px}.card.destaque .card-title{font-size:28px}
+  .card.destaque .card-footer{padding:20px 32px}.card.destaque .card-preco{font-size:34px}
+  .modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,.92);z-index:200;display:flex;align-items:center;justify-content:center;padding:40px;opacity:0;pointer-events:none;transition:opacity .3s}
+  .modal-overlay.open{opacity:1;pointer-events:all}
+  .modal{background:var(--dark-2);border:1px solid rgba(201,168,76,.15);width:100%;max-width:900px;max-height:90vh;overflow-y:auto;transform:translateY(20px);transition:transform .3s;position:relative}
+  .modal-overlay.open .modal{transform:translateY(0)}
+  .modal-img{width:100%;aspect-ratio:16/8;object-fit:cover}
+  .modal-img-placeholder{width:100%;aspect-ratio:16/8;background:var(--dark-3);display:flex;align-items:center;justify-content:center}
+  .modal-content{padding:48px}
+  .modal-tipo{font-size:9px;font-weight:600;letter-spacing:3px;text-transform:uppercase;color:var(--gold);margin-bottom:12px}
+  .modal-title{font-family:var(--font-display);font-size:38px;font-weight:300;color:var(--white);margin-bottom:8px}
+  .modal-local{font-size:13px;color:var(--gray);margin-bottom:32px}
+  .modal-preco{font-family:var(--font-display);font-size:48px;font-weight:300;color:var(--gold-light);margin-bottom:32px;line-height:1}
+  .modal-preco span{font-size:18px;font-family:var(--font-body);color:var(--gray);font-weight:300}
+  .modal-divider{height:1px;background:rgba(201,168,76,.12);margin:32px 0}
+  .modal-specs{display:grid;grid-template-columns:repeat(auto-fill,minmax(140px,1fr));gap:24px;margin-bottom:32px}
+  .modal-spec-label{font-size:8px;letter-spacing:2.5px;text-transform:uppercase;color:var(--gold);margin-bottom:6px}
+  .modal-spec-value{font-family:var(--font-display);font-size:22px;font-weight:300;color:var(--white)}
+  .modal-desc{font-size:13px;line-height:1.8;color:var(--gray-light);margin-bottom:40px}
+  .modal-actions{display:flex;gap:16px;flex-wrap:wrap}
+  .modal-close{position:absolute;top:20px;right:20px;background:none;border:1px solid rgba(201,168,76,.2);color:var(--gray);width:40px;height:40px;display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:18px;transition:all .2s}
+  .modal-close:hover{border-color:var(--gold);color:var(--gold)}
+  .contact-strip{background:var(--dark-2);border-top:1px solid rgba(201,168,76,.12);border-bottom:1px solid rgba(201,168,76,.12)}
+  .contact-inner{max-width:1400px;margin:0 auto;padding:64px 60px;display:flex;align-items:center;justify-content:space-between;gap:40px;flex-wrap:wrap}
+  .contact-text .eyebrow{font-size:9px;font-weight:500;letter-spacing:4px;text-transform:uppercase;color:var(--gold);margin-bottom:12px}
+  .contact-text h2{font-family:var(--font-display);font-size:40px;font-weight:300;color:var(--white);line-height:1.1}
+  .contact-text h2 em{font-style:italic;color:var(--gold-light)}
+  .contact-links{display:flex;flex-direction:column;gap:12px}
+  .contact-link{display:flex;align-items:center;gap:14px;color:var(--gray-light);text-decoration:none;font-size:13px;transition:color .2s}
+  .contact-link:hover{color:var(--gold-light)}
+  .contact-icon{width:36px;height:36px;border:1px solid rgba(201,168,76,.2);display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:border-color .2s}
+  .contact-link:hover .contact-icon{border-color:var(--gold)}
+  footer{background:var(--dark);border-top:1px solid rgba(201,168,76,.08);padding:40px 60px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:20px}
+  .footer-brand{font-family:var(--font-display);font-size:18px;font-style:italic;color:var(--gold)}
+  .footer-info{font-size:10px;letter-spacing:1px;color:var(--gray);text-align:center}
+  .footer-creci{font-size:10px;letter-spacing:2px;text-transform:uppercase;color:var(--gray)}
+  .fade-up{opacity:0;transform:translateY(24px);transition:opacity .7s ease,transform .7s ease}
+  .fade-up.visible{opacity:1;transform:translateY(0)}
+  .empty-state{text-align:center;padding:80px 0}
+  .empty-title{font-family:var(--font-display);font-size:28px;color:var(--gray);font-style:italic}
+  .empty-sub{font-size:12px;color:var(--gray);margin-top:8px;letter-spacing:1px}
+  @media(max-width:768px){
+    nav{padding:20px 24px}.nav-links,.nav-cta{display:none}
+    .imoveis-section{padding:60px 24px}.filters-inner{padding:24px}
+    .numbers-strip{padding:32px 24px;gap:40px}.contact-inner{padding:48px 24px}
+    footer{padding:32px 24px}.card.destaque{grid-column:span 1}
+    .card.destaque .card-img{aspect-ratio:4/3}
+    .modal-content{padding:32px 24px}.modal-title{font-size:28px}.modal-preco{font-size:36px}
   }
 </style>
 </head>
 <body>
 
-<!-- NAV -->
+<script>
+// ╔══════════════════════════════════════════════════╗
+// ║  CONFIGURAÇÕES — EDITE AQUI QUANDO PRECISAR     ║
+// ╚══════════════════════════════════════════════════╝
+const CONFIG = {
+  whatsapp:         '5535992261306',
+  whatsappExibicao: '(35) 9 9226-1306',
+  email:            'sobreiro.1720@gmail.com',
+  instagram:        'alepaixao',
+  nomeCorretora:    'Alessandra Paixão',
+  imobiliaria:      'BG Imóveis',
+  creci:            'CRECI PJ 4047',
+  cidade:           'Poços de Caldas MG',
+};
+
+// ╔══════════════════════════════════════════════════╗
+// ║  SUPABASE — não mexa aqui                       ║
+// ╚══════════════════════════════════════════════════╝
+const SUPA_URL = 'https://lnaghoxwohdupftwofza.supabase.co';
+const SUPA_KEY = 'sb_publishable_5ylsEMpbdV_XXaKKMRGokg_BShk85ar';
+
+async function carregarImoveis() {
+  const res = await fetch(
+    SUPA_URL + '/rest/v1/imoveis?status=eq.ativo&order=created_at.desc',
+    { headers: { 'apikey': SUPA_KEY, 'Authorization': 'Bearer ' + SUPA_KEY } }
+  );
+  if (!res.ok) return [];
+  return await res.json();
+}
+</script>
+
 <nav id="navbar">
   <div class="nav-brand">
     <span class="name">Alessandra Paixão</span>
@@ -862,7 +186,6 @@
   <a href="#contato" class="nav-cta">Falar com a corretora</a>
 </nav>
 
-<!-- HERO -->
 <section class="hero">
   <div class="hero-bg"></div>
   <div class="hero-lines"></div>
@@ -875,33 +198,16 @@
       <a href="#contato" class="btn-secondary">Falar com a Alessandra</a>
     </div>
   </div>
-  <div class="hero-scroll">
-    <div class="hero-scroll-line"></div>
-    <span>Explorar</span>
-  </div>
+  <div class="hero-scroll"><div class="hero-scroll-line"></div><span>Explorar</span></div>
 </section>
 
-<!-- NUMBERS -->
 <div class="numbers-strip">
-  <div class="number-item fade-up">
-    <div class="num" id="count-imoveis">0</div>
-    <div class="label">Imóveis disponíveis</div>
-  </div>
-  <div class="number-item fade-up" style="transition-delay:0.1s">
-    <div class="num">100%</div>
-    <div class="label">Atendimento personalizado</div>
-  </div>
-  <div class="number-item fade-up" style="transition-delay:0.2s">
-    <div class="num">Poços</div>
-    <div class="label">de Caldas e região</div>
-  </div>
-  <div class="number-item fade-up" style="transition-delay:0.3s">
-    <div class="num">CRECI</div>
-    <div class="label">PJ 4047 — Registro ativo</div>
-  </div>
+  <div class="number-item fade-up"><div class="num" id="count-imoveis">—</div><div class="label">Imóveis disponíveis</div></div>
+  <div class="number-item fade-up" style="transition-delay:.1s"><div class="num">100%</div><div class="label">Atendimento personalizado</div></div>
+  <div class="number-item fade-up" style="transition-delay:.2s"><div class="num">Poços</div><div class="label">de Caldas e região</div></div>
+  <div class="number-item fade-up" style="transition-delay:.3s"><div class="num">CRECI</div><div class="label">PJ 4047 — Registro ativo</div></div>
 </div>
 
-<!-- FILTROS -->
 <div class="filters" id="imoveis">
   <div class="filters-inner">
     <span class="filter-label">Filtrar por</span>
@@ -924,250 +230,100 @@
   </div>
 </div>
 
-<!-- GRID DE IMÓVEIS -->
 <div class="imoveis-section">
-  <div class="imoveis-grid" id="grid-imoveis">
-    <!-- Cards gerados pelo JS -->
+  <div id="loading-wrap" class="loading-bar">
+    <div class="loading-spinner"></div>
+    <span class="loading-text">Carregando imóveis...</span>
   </div>
-  <div id="sem-resultado" style="display:none; text-align:center; padding:80px 0;">
-    <p style="font-family:var(--font-display); font-size:28px; color:var(--gray); font-style:italic;">Nenhum imóvel encontrado</p>
-    <p style="font-size:12px; color:var(--gray); margin-top:8px; letter-spacing:1px;">Tente ajustar os filtros</p>
+  <div class="imoveis-grid" id="grid-imoveis" style="display:none;"></div>
+  <div id="sem-resultado" style="display:none;text-align:center;padding:80px 0;">
+    <p style="font-family:var(--font-display);font-size:28px;color:var(--gray);font-style:italic;">Nenhum imóvel encontrado</p>
+    <p style="font-size:12px;color:var(--gray);margin-top:8px;letter-spacing:1px;">Tente ajustar os filtros</p>
+  </div>
+  <div id="sem-imoveis" class="empty-state" style="display:none;">
+    <p class="empty-title">Nenhum imóvel disponível no momento</p>
+    <p class="empty-sub">Em breve novos imóveis serão adicionados</p>
   </div>
 </div>
 
-<!-- CONTATO -->
 <div class="contact-strip" id="contato">
   <div class="contact-inner">
     <div class="contact-text">
       <p class="eyebrow">Atendimento exclusivo</p>
       <h2>Fale com<br><em>Alessandra Paixão</em></h2>
-      <p style="margin-top:12px; font-size:12px; color:var(--gray); letter-spacing:0.5px;">Corretora · BG Imóveis · Poços de Caldas MG</p>
+      <p style="margin-top:12px;font-size:12px;color:var(--gray);">Corretora · BG Imóveis · Poços de Caldas MG</p>
     </div>
     <div class="contact-links">
-      <a href="https://wa.me/5535992261306" target="_blank" class="contact-link">
-        <div class="contact-icon">
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M21 11.5a8.38 8.38 0 01-.9 3.8 8.5 8.5 0 01-7.6 4.7 8.38 8.38 0 01-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 01-.9-3.8 8.5 8.5 0 014.7-7.6 8.38 8.38 0 013.8-.9h.5a8.48 8.48 0 018 8v.5z"/></svg>
-        </div>
-        <span id="exibe-whatsapp">(35) 9 9226-1306</span>
+      <a id="link-wpp" href="#" target="_blank" class="contact-link">
+        <div class="contact-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M21 11.5a8.38 8.38 0 01-.9 3.8 8.5 8.5 0 01-7.6 4.7 8.38 8.38 0 01-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 01-.9-3.8 8.5 8.5 0 014.7-7.6 8.38 8.38 0 013.8-.9h.5a8.48 8.48 0 018 8v.5z"/></svg></div>
+        <span id="exibe-wpp"></span>
       </a>
-      <a id="link-email" href="/cdn-cgi/l/email-protection#b3c0dcd1c1d6dac1dc9d82848183f3d4ded2dadf9dd0dcde" class="contact-link">
-        <div class="contact-icon">
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="M22 7l-10 7L2 7"/></svg>
-        </div>
-        <span id="exibe-email"><span class="__cf_email__" data-cfemail="5e2d313c2c3b372c31706f696c6e1e39333f3732703d3133">[email&#160;protected]</span></span>
+      <a id="link-email" href="#" class="contact-link">
+        <div class="contact-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="M22 7l-10 7L2 7"/></svg></div>
+        <span id="exibe-email"></span>
       </a>
-      <a href="https://instagram.com/alepaixao" target="_blank" class="contact-link">
-        <div class="contact-icon">
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1" fill="currentColor"/></svg>
-        </div>
-        @alepaixao
+      <a id="link-ig" href="#" target="_blank" class="contact-link">
+        <div class="contact-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1" fill="currentColor"/></svg></div>
+        <span id="exibe-ig"></span>
       </a>
     </div>
   </div>
 </div>
 
-<!-- FOOTER -->
 <footer>
   <div class="footer-brand">Alessandra Paixão</div>
   <div class="footer-info">© 2025 Alessandra Paixão · Corretora de Imóveis · Poços de Caldas MG</div>
   <div class="footer-creci">CRECI PJ 4047</div>
 </footer>
 
-<!-- MODAL -->
 <div class="modal-overlay" id="modal">
-  <div class="modal" id="modal-content-box">
+  <div class="modal">
     <button class="modal-close" onclick="fecharModal()">✕</button>
     <div id="modal-body"></div>
   </div>
 </div>
 
-<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
-// ╔══════════════════════════════════════════════════════════════╗
-// ║           CONFIGURAÇÕES — EDITE AQUI SEMPRE QUE PRECISAR    ║
-// ╠══════════════════════════════════════════════════════════════╣
-// ║  Altere os valores abaixo e salve o arquivo.                 ║
-// ║  Não mexa em mais nada fora desta seção!                     ║
-// ╚══════════════════════════════════════════════════════════════╝
-const CONFIG = {
-  // ── CONTATO ──────────────────────────────────────────────────
-  whatsapp:  '5535992261306',         // número com DDI+DDD, sem espaços ou traços
-  whatsappExibicao: '(35) 9 9226-1306', // como aparece na tela
-  email:     'sobreiro.1720@gmail.com',
-  instagram: 'alepaixao',
+<script>
+let todosImoveis = [];
+let imoveisFiltrados = [];
 
-  // ── CORRETORA ────────────────────────────────────────────────
-  nomeCorretora: 'Alessandra Paixão',
-  nomeSite:      'Alessandra Paixão — Corretora de Imóveis',
-  creci:         'CRECI PJ 4047',
-  imobiliaria:   'BG Imóveis',
-
-  // ── LOCALIZAÇÃO ──────────────────────────────────────────────
-  cidade: 'Poços de Caldas',
-  estado: 'MG',
-  regiao: 'Poços de Caldas e região',
-};
-// ╚══════════════════════════════════════════════════════════════╝
-
-// ── DADOS: lê do admin (localStorage) ou usa exemplos se vazio ──
-const EXEMPLOS = [
-  {
-    id: 1,
-    tipo: 'Casa',
-    titulo: 'Casa em condomínio fechado',
-    bairro: 'Jardim Elite',
-    cidade: 'Poços de Caldas',
-    preco: 1850000,
-    quartos: 4,
-    suites: 2,
-    vagas: 4,
-    area: 320,
-    descricao: 'Exuberante residência em condomínio fechado com altíssimo padrão construtivo. Pé direito duplo, varanda gourmet, piscina aquecida e acabamentos importados. Segurança 24h e lazer completo.',
-    destaque: true,
-    foto: null
-  },
-  {
-    id: 2,
-    tipo: 'Apartamento',
-    titulo: 'Apartamento alto padrão',
-    bairro: 'Centro',
-    cidade: 'Poços de Caldas',
-    preco: 980000,
-    quartos: 3,
-    suites: 1,
-    vagas: 2,
-    area: 148,
-    descricao: 'Apartamento completamente reformado com projeto de interiores assinado. Vista panorâmica, cozinha gourmet integrada e varanda com churrasqueira.',
-    destaque: false,
-    foto: null
-  },
-  {
-    id: 3,
-    tipo: 'Casa',
-    titulo: 'Casa com piscina',
-    bairro: 'Jardim Quisisana',
-    cidade: 'Poços de Caldas',
-    preco: 750000,
-    quartos: 3,
-    suites: 1,
-    vagas: 2,
-    area: 210,
-    descricao: 'Charming casa em rua tranquila com amplo jardim, piscina e área gourmet perfeita para receber.',
-    destaque: false,
-    foto: null
-  },
-  {
-    id: 4,
-    tipo: 'Terreno',
-    titulo: 'Terreno em condomínio',
-    bairro: 'Condomínio Fazenda',
-    cidade: 'Poços de Caldas',
-    preco: 480000,
-    quartos: null,
-    suites: null,
-    vagas: null,
-    area: 600,
-    descricao: 'Terreno plano em condomínio fechado de alto padrão com toda infraestrutura: asfalto, iluminação, guarita 24h e área de lazer.',
-    destaque: false,
-    foto: null
-  },
-  {
-    id: 5,
-    tipo: 'Apartamento',
-    titulo: 'Studio moderno',
-    bairro: 'Centro',
-    cidade: 'Poços de Caldas',
-    preco: 420000,
-    quartos: 1,
-    suites: 1,
-    vagas: 1,
-    area: 52,
-    descricao: 'Studio completamente mobiliado e decorado no coração da Savassi. Ideal para investimento ou moradia. Condomínio com academia, piscina e coworking.',
-    destaque: false,
-    foto: null
-  },
-  {
-    id: 6,
-    tipo: 'Casa',
-    titulo: 'Casa de luxo',
-    bairro: 'Jardim dos Estados',
-    cidade: 'Poços de Caldas',
-    preco: 3200000,
-    quartos: 5,
-    suites: 3,
-    vagas: 5,
-    area: 520,
-    descricao: 'Mansão com acabamento europeu, adega climatizada, home theater, sauna, spa e piscina com cascata. Um dos imóveis mais exclusivos de Poços de Caldas.',
-    destaque: false,
-    foto: null
-  }
-];
-
-// Carrega imóveis do admin (localStorage) — se não houver, usa exemplos
-function carregarImoveis() {
-  try {
-    const saved = localStorage.getItem('ap_imoveis');
-    if (saved) {
-      const dados = JSON.parse(saved);
-      if (Array.isArray(dados) && dados.length > 0) {
-        // Adapta campos do admin para o formato da vitrine
-        return dados
-          .filter(im => im.status === 'ativo')
-          .map(im => ({
-            ...im,
-            foto: (im.fotos && im.fotos[0]) || null,
-          }));
-      }
-    }
-  } catch(e) {}
-  return EXEMPLOS; // fallback
+function aplicarConfig() {
+  document.getElementById('exibe-wpp').textContent   = 'WhatsApp — ' + CONFIG.whatsappExibicao;
+  document.getElementById('exibe-email').textContent = CONFIG.email;
+  document.getElementById('exibe-ig').textContent    = '@' + CONFIG.instagram;
+  document.getElementById('link-wpp').href   = 'https://wa.me/' + CONFIG.whatsapp;
+  document.getElementById('link-email').href = 'mailto:' + CONFIG.email;
+  document.getElementById('link-ig').href    = 'https://instagram.com/' + CONFIG.instagram;
 }
 
-const imoveis = carregarImoveis();
-let imoveisFiltrados = [...imoveis];
+function getFotos(im) {
+  if (!im.fotos) return [];
+  try { return typeof im.fotos === 'string' ? JSON.parse(im.fotos) : im.fotos; }
+  catch(e) { return []; }
+}
 
 function formatPreco(v) {
-  if (v >= 1000000) return `R$ ${(v/1000000).toFixed(v%1000000===0?0:1)} mi`;
-  return `R$ ${(v/1000).toFixed(0)} mil`;
-}
-
-function formatPrecoCompleto(v) {
-  return 'R$ ' + v.toLocaleString('pt-BR');
+  if (v >= 1000000) return 'R$ ' + (v/1000000).toFixed(1).replace('.',',') + ' mi';
+  return 'R$ ' + (v/1000).toFixed(0) + ' mil';
 }
 
 function renderCard(im) {
+  const fotos = getFotos(im);
+  const foto  = fotos[0];
   const badge = im.destaque ? '<div class="card-badge">Destaque</div>' : '';
-  const foto = im.foto
-    ? `<img src="${im.foto}" alt="${im.titulo}" loading="lazy">`
-    : `<div class="card-img-placeholder">
-        <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="rgba(201,168,76,0.4)" stroke-width="1">
-          <rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/>
-          <path d="M21 15l-5-5L5 21"/>
-        </svg>
-       </div>`;
-
+  const imgHtml = foto
+    ? `<img src="${foto}" alt="${im.titulo}" loading="lazy">`
+    : `<div class="card-img-placeholder"><svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="rgba(201,168,76,0.4)" stroke-width="1"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="M21 15l-5-5L5 21"/></svg></div>`;
   const specs = im.tipo !== 'Terreno'
     ? `<div class="card-details">
-        <div class="card-detail">
-          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
-          ${im.quartos} qts
-        </div>
-        ${im.suites ? `<div class="card-detail"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M20 7H4a2 2 0 00-2 2v9a2 2 0 002 2h16a2 2 0 002-2V9a2 2 0 00-2-2z"/><path d="M16 7V5a2 2 0 00-2-2h-4a2 2 0 00-2 2v2"/></svg>${im.suites} suíte${im.suites>1?'s':''}</div>` : ''}
-        <div class="card-detail">
-          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 21V5a2 2 0 00-2-2h-4a2 2 0 00-2 2v16"/></svg>
-          ${im.area} m²
-        </div>
+        ${im.quartos ? `<div class="card-detail"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/></svg>${im.quartos} qts</div>` : ''}
+        ${im.suites  ? `<div class="card-detail">${im.suites} suíte${im.suites>1?'s':''}</div>` : ''}
+        ${im.area    ? `<div class="card-detail">${im.area} m²</div>` : ''}
        </div>`
-    : `<div class="card-details"><div class="card-detail">${im.area} m²</div></div>`;
-
+    : `<div class="card-details">${im.area ? `<div class="card-detail">${im.area} m²</div>` : ''}</div>`;
   return `
-    <div class="card ${im.destaque ? 'destaque' : ''} fade-up" onclick="abrirModal(${im.id})">
-      <div class="card-img">
-        ${badge}
-        ${foto}
-        <div class="card-overlay">
-          <button class="card-overlay-btn">Ver detalhes</button>
-        </div>
-      </div>
+    <div class="card ${im.destaque?'destaque':''} fade-up" onclick="abrirModal(${im.id})">
+      <div class="card-img">${badge}${imgHtml}<div class="card-overlay"><button class="card-overlay-btn">Ver detalhes</button></div></div>
       <div class="card-body">
         <div class="card-tipo">${im.tipo}</div>
         <div class="card-title">${im.titulo}</div>
@@ -1181,79 +337,70 @@ function renderCard(im) {
 }
 
 function renderGrid() {
-  const grid = document.getElementById('grid-imoveis');
+  const grid   = document.getElementById('grid-imoveis');
   const semRes = document.getElementById('sem-resultado');
+  const semIm  = document.getElementById('sem-imoveis');
   document.getElementById('resultado-count').textContent = imoveisFiltrados.length;
-
-  if (imoveisFiltrados.length === 0) {
-    grid.innerHTML = '';
-    semRes.style.display = 'block';
-    return;
-  }
-  semRes.style.display = 'none';
+  if (todosImoveis.length === 0) { grid.style.display='none'; semRes.style.display='none'; semIm.style.display='block'; return; }
+  semIm.style.display = 'none';
+  if (imoveisFiltrados.length === 0) { grid.style.display='none'; semRes.style.display='block'; return; }
+  semRes.style.display='none'; grid.style.display='grid';
   grid.innerHTML = imoveisFiltrados.map(renderCard).join('');
-
-  // Contador animado
-  const countEl = document.getElementById('count-imoveis');
-  if (countEl) animateCount(countEl, imoveis.length);
-
+  document.getElementById('count-imoveis').textContent = todosImoveis.length;
   observeFadeUp();
 }
 
 function filtrar() {
-  const tipo = document.getElementById('filtro-tipo').value;
+  const tipo     = document.getElementById('filtro-tipo').value;
   const precoMax = parseInt(document.getElementById('filtro-preco').value) || 99999999;
-  const bairro = document.getElementById('filtro-bairro').value.toLowerCase().trim();
-
-  imoveisFiltrados = imoveis.filter(im => {
-    const okTipo = !tipo || im.tipo === tipo;
-    const okPreco = im.preco <= precoMax;
-    const okBairro = !bairro || im.bairro.toLowerCase().includes(bairro) || im.cidade.toLowerCase().includes(bairro);
-    return okTipo && okPreco && okBairro;
+  const bairro   = document.getElementById('filtro-bairro').value.toLowerCase().trim();
+  imoveisFiltrados = todosImoveis.filter(im => {
+    return (!tipo   || im.tipo === tipo)
+        && (im.preco <= precoMax)
+        && (!bairro || (im.bairro||'').toLowerCase().includes(bairro) || (im.cidade||'').toLowerCase().includes(bairro));
   });
   renderGrid();
 }
 
 function limparFiltros() {
-  document.getElementById('filtro-tipo').value = '';
+  document.getElementById('filtro-tipo').value  = '';
   document.getElementById('filtro-preco').value = '';
-  document.getElementById('filtro-bairro').value = '';
-  imoveisFiltrados = [...imoveis];
+  document.getElementById('filtro-bairro').value= '';
+  imoveisFiltrados = [...todosImoveis];
   renderGrid();
 }
 
 function abrirModal(id) {
-  const im = imoveis.find(i => i.id === id);
+  const im = todosImoveis.find(i => i.id === id);
   if (!im) return;
-
-  const foto = im.foto
-    ? `<img class="modal-img" src="${im.foto}" alt="${im.titulo}">`
-    : `<div class="modal-img-placeholder"><svg width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="rgba(201,168,76,0.3)" stroke-width="0.75"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="M21 15l-5-5L5 21"/></svg></div>`;
-
+  const fotos = getFotos(im);
+  const foto  = fotos[0];
+  const imgHtml = foto
+    ? `<img class="modal-img" src="${foto}" alt="${im.titulo}">`
+    : `<div class="modal-img-placeholder"><svg width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="rgba(201,168,76,0.3)" stroke-width=".75"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="M21 15l-5-5L5 21"/></svg></div>`;
   const specs = im.tipo !== 'Terreno' ? `
-    <div class="modal-spec"><div class="modal-spec-label">Quartos</div><div class="modal-spec-value">${im.quartos}</div></div>
-    ${im.suites ? `<div class="modal-spec"><div class="modal-spec-label">Suítes</div><div class="modal-spec-value">${im.suites}</div></div>` : ''}
-    ${im.vagas ? `<div class="modal-spec"><div class="modal-spec-label">Vagas</div><div class="modal-spec-value">${im.vagas}</div></div>` : ''}
-    <div class="modal-spec"><div class="modal-spec-label">Área</div><div class="modal-spec-value">${im.area} m²</div></div>
-  ` : `<div class="modal-spec"><div class="modal-spec-label">Área total</div><div class="modal-spec-value">${im.area} m²</div></div>`;
-
+    ${im.quartos ? `<div class="modal-spec"><div class="modal-spec-label">Quartos</div><div class="modal-spec-value">${im.quartos}</div></div>` : ''}
+    ${im.suites  ? `<div class="modal-spec"><div class="modal-spec-label">Suítes</div><div class="modal-spec-value">${im.suites}</div></div>`  : ''}
+    ${im.vagas   ? `<div class="modal-spec"><div class="modal-spec-label">Vagas</div><div class="modal-spec-value">${im.vagas}</div></div>`    : ''}
+    ${im.area    ? `<div class="modal-spec"><div class="modal-spec-label">Área</div><div class="modal-spec-value">${im.area} m²</div></div>`   : ''}
+  ` : `${im.area ? `<div class="modal-spec"><div class="modal-spec-label">Área total</div><div class="modal-spec-value">${im.area} m²</div></div>` : ''}`;
+  const msg = encodeURIComponent('Olá Alessandra! Tenho interesse no imóvel: ' + im.titulo + ' - ' + im.bairro);
   document.getElementById('modal-body').innerHTML = `
-    ${foto}
+    ${imgHtml}
     <div class="modal-content">
       <div class="modal-tipo">${im.tipo} · ${im.bairro}</div>
       <h2 class="modal-title">${im.titulo}</h2>
       <div class="modal-local">${im.bairro}, ${im.cidade}</div>
-      <div class="modal-preco"><span>R$ </span>${im.preco.toLocaleString('pt-BR')}</div>
+      <div class="modal-preco"><span>R$ </span>${Number(im.preco).toLocaleString('pt-BR')}</div>
       <div class="modal-divider"></div>
       <div class="modal-specs">${specs}</div>
       <div class="modal-divider"></div>
-      <p class="modal-desc">${im.descricao}</p>
+      <p class="modal-desc">${im.descricao || ''}</p>
       <div class="modal-actions">
-        <a href="https://wa.me/5535992261306?text=Olá Alessandra! Tenho interesse no imóvel: ${encodeURIComponent(im.titulo + ' - ' + im.bairro)}" target="_blank" class="btn-primary"><span>Falar no WhatsApp</span></a>
-        <a href="mailto:sobreiro.1720@gmail.com?subject=Interesse: ${encodeURIComponent(im.titulo)}" class="btn-secondary">Enviar e-mail</a>
+        <a href="https://wa.me/${CONFIG.whatsapp}?text=${msg}" target="_blank" class="btn-primary"><span>Falar no WhatsApp</span></a>
+        <a href="mailto:${CONFIG.email}?subject=Interesse: ${encodeURIComponent(im.titulo)}" class="btn-secondary">Enviar e-mail</a>
       </div>
     </div>`;
-
   document.getElementById('modal').classList.add('open');
   document.body.style.overflow = 'hidden';
 }
@@ -1262,60 +409,28 @@ function fecharModal() {
   document.getElementById('modal').classList.remove('open');
   document.body.style.overflow = '';
 }
+document.getElementById('modal').addEventListener('click', function(e){ if(e.target===this) fecharModal(); });
+document.addEventListener('keydown', e => { if(e.key==='Escape') fecharModal(); });
+window.addEventListener('scroll', () => { document.getElementById('navbar').classList.toggle('scrolled', window.scrollY > 60); });
 
-document.getElementById('modal').addEventListener('click', function(e) {
-  if (e.target === this) fecharModal();
-});
-document.addEventListener('keydown', e => { if (e.key === 'Escape') fecharModal(); });
-
-// ── SCROLL NAV ──
-window.addEventListener('scroll', () => {
-  document.getElementById('navbar').classList.toggle('scrolled', window.scrollY > 60);
-});
-
-// ── FADE UP ──
 function observeFadeUp() {
-  const els = document.querySelectorAll('.fade-up:not(.visible)');
   const obs = new IntersectionObserver((entries) => {
-    entries.forEach((e, i) => {
-      if (e.isIntersecting) {
-        setTimeout(() => e.target.classList.add('visible'), i * 60);
-        obs.unobserve(e.target);
-      }
-    });
+    entries.forEach((e,i) => { if(e.isIntersecting){ setTimeout(()=>e.target.classList.add('visible'),i*60); obs.unobserve(e.target); } });
   }, { threshold: 0.1 });
-  els.forEach(el => obs.observe(el));
+  document.querySelectorAll('.fade-up:not(.visible)').forEach(el => obs.observe(el));
 }
 
-// ── COUNTER ANIMATION ──
-function animateCount(el, target) {
-  let current = 0;
-  const step = Math.ceil(target / 30);
-  const timer = setInterval(() => {
-    current = Math.min(current + step, target);
-    el.textContent = current;
-    if (current >= target) clearInterval(timer);
-  }, 40);
+async function init() {
+  aplicarConfig();
+  observeFadeUp();
+  try {
+    todosImoveis     = await carregarImoveis();
+    imoveisFiltrados = [...todosImoveis];
+  } catch(e) { todosImoveis = []; imoveisFiltrados = []; }
+  document.getElementById('loading-wrap').style.display = 'none';
+  renderGrid();
 }
-
-// ── INIT ──
-// Aplica CONFIG em todos os elementos dinâmicos
-document.title = CONFIG.nomeSite;
-// WhatsApp links
-document.querySelectorAll('a[href*="wa.me"]').forEach(a => {
-  a.href = a.href.replace(/wa\.me\/\d+/, `wa.me/${CONFIG.whatsapp}`);
-});
-// Email links
-document.querySelectorAll('a[href^="mailto:"]').forEach(a => {
-  const assunto = a.href.includes('?') ? a.href.split('?')[1] : '';
-  a.href = `mailto:${CONFIG.email}${assunto ? '?' + assunto : ''}`;
-});
-// Instagram
-document.querySelectorAll('a[href*="instagram.com"]').forEach(a => {
-  a.href = `https://instagram.com/${CONFIG.instagram}`;
-  const span = a.querySelector('span') || a;
-  if (!a.querySelector('span')) a.lastChild.textContent = ` @${CONFIG.instagram}`;
-});
-// Exibição
-if (document.getElementById('exibe-whatsapp'))
-  document.getElement
+init();
+</script>
+</body>
+</html>
