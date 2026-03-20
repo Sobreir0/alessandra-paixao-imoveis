@@ -163,7 +163,8 @@
 // ╔══════════════════════════════════════════════════╗
 // ║  CONFIGURAÇÕES — EDITE AQUI QUANDO PRECISAR     ║
 // ╚══════════════════════════════════════════════════╝
-const CONFIG = {
+// ── Configurações padrão (fallback) ──
+const CONFIG_PADRAO = {
   whatsapp:         '5535992261306',
   whatsappExibicao: '(35) 9 9226-1306',
   email:            'sobreiro.1720@gmail.com',
@@ -173,6 +174,23 @@ const CONFIG = {
   creci:            'CRECI PJ 4047',
   cidade:           'Poços de Caldas MG',
 };
+// ── Lê configurações salvas pelo Admin (localStorage) ──
+function getConfigAtual() {
+  try {
+    const salvo = JSON.parse(localStorage.getItem('ap_cfg') || '{}');
+    return {
+      whatsapp:         salvo.wpp      || CONFIG_PADRAO.whatsapp,
+      whatsappExibicao: salvo.wppExib  || CONFIG_PADRAO.whatsappExibicao,
+      email:            salvo.email    || CONFIG_PADRAO.email,
+      instagram:        salvo.ig       || CONFIG_PADRAO.instagram,
+      nomeCorretora:    salvo.nome     || CONFIG_PADRAO.nomeCorretora,
+      imobiliaria:      salvo.imob     || CONFIG_PADRAO.imobiliaria,
+      creci:            salvo.creci    || CONFIG_PADRAO.creci,
+      cidade:           salvo.cidade   || CONFIG_PADRAO.cidade,
+    };
+  } catch(e) { return CONFIG_PADRAO; }
+}
+const CONFIG = getConfigAtual();
 
 // ╔══════════════════════════════════════════════════╗
 // ║  SUPABASE — não mexa aqui                       ║
@@ -301,6 +319,8 @@ let todosImoveis = [];
 let imoveisFiltrados = [];
 
 function aplicarConfig() {
+  // Re-lê config atualizada do admin
+  Object.assign(CONFIG, getConfigAtual());
   document.getElementById('exibe-wpp').textContent   = 'WhatsApp — ' + CONFIG.whatsappExibicao;
   document.getElementById('exibe-email').textContent = CONFIG.email;
   document.getElementById('exibe-ig').textContent    = '@' + CONFIG.instagram;
